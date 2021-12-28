@@ -49,7 +49,7 @@ public class Reactor<T> implements Server<T> {
 			System.out.println("Server started");
 
             while (!Thread.currentThread().isInterrupted()) {
-
+                System.out.println("here");
                 selector.select();
                 runSelectionThreadTasks();
 
@@ -69,6 +69,7 @@ public class Reactor<T> implements Server<T> {
             }
 
         } catch (ClosedSelectorException ex) {
+            System.out.println("here");
             //do nothing - server was requested to be closed
         } catch (IOException ex) {
             //this is an error
