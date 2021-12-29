@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include "../include/connectionHandler.h"
 
+using namespace std;
 /**
 * This code assumes that the server replies the exact text the client sent it (as opposed to the practical session example)
 */
@@ -19,6 +20,21 @@ int main (int argc, char *argv[]) {
     }
 	
 	//From here we will see the rest of the ehco client implementation:
+    //create 2 Threads for writing and reading
+
+    thread thread_writing = new thread(connec)
+
+
+
+
+
+
+
+
+
+
+
+
     while (1) {
         const short bufsize = 1024;
         char buf[bufsize];
