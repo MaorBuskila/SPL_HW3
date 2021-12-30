@@ -2,6 +2,8 @@ package bgu.spl.net.srv;
 
 import bgu.spl.net.api.MessageEncoderDecoder;
 import bgu.spl.net.api.MessagingProtocol;
+import bgu.spl.net.api.bidi.BidiMessagingProtocol;
+
 import java.io.Closeable;
 import java.util.function.Supplier;
 
@@ -11,6 +13,7 @@ public interface Server<T> extends Closeable {
      * The main loop of the server, Starts listening and handling new clients.
      */
     void serve();
+
 
     /**
      *This function returns a new instance of a thread per client pattern server
@@ -22,7 +25,7 @@ public interface Server<T> extends Closeable {
      */
     public static <T> Server<T>  threadPerClient(
             int port,
-            Supplier<MessagingProtocol<T> > protocolFactory,
+            Supplier<BidiMessagingProtocol<T>> protocolFactory,
             Supplier<MessageEncoderDecoder<T> > encoderDecoderFactory) {
 
         return new BaseServer<T>(port, protocolFactory, encoderDecoderFactory) {

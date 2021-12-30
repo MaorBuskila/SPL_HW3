@@ -1,5 +1,7 @@
 package bgu.spl.net.api.bidi;
 
+import bgu.spl.net.srv.ConnectionHandler;
+
 import java.io.IOException;
 
 public interface Connections<T> {
@@ -9,4 +11,9 @@ public interface Connections<T> {
     void broadcast(T msg);
 
     void disconnect(int connectionId);
+
+
+    //added by myself
+    void addClientConnection (int connectionId , ConnectionHandler<T> ch);
+
 }

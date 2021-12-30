@@ -1,11 +1,14 @@
-package bgu.spl.net.impl;
+package bgu.spl.net.impl.BGSServer;
 
 import bgu.spl.net.api.bidi.Connections;
 import bgu.spl.net.srv.ConnectionHandler;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class ConnectionsImpl<T>  implements Connections<T> {
 
+
+    private AtomicInteger idCounter = new AtomicInteger(0);
     private ConcurrentHashMap<Integer , ConnectionHandler<T>> activeClient = new ConcurrentHashMap<>() ;
     @Override
     public boolean send(int connectionId, T msg) {
@@ -30,16 +33,25 @@ public class ConnectionsImpl<T>  implements Connections<T> {
     public void disconnect(int connectionId) {
         if (activeClient.contains(connectionId)) {
             System.out.println("Client - " + connectionId + " disconnected");
+            activeClient.remove(connectionId); //Todo:check
         }
 
     }
 
-    private void addClientConnection (int connectionId , ConnectionHandler<T> ch){
-        if (activeClient.containsKey(ch)) {
+    public void addClientConnection (int connectionId , ConnectionHandler<T> ch){
+        if (activeClient.contains(connectionId)) {
             System.out.println("Client Already Connected");
         }
         else{
             activeClient.put(connectionId , ch);
         }
+    }
+    ///////// Connecction get instance for Non\Blocking connection handler/////////
+    private ConnectionsImpl<T> connections = null;
+    public  ConnectionsImpl<T> getInstance() {
+        if (connections == null) {
+            connections = new ConnectionsImpl<T>();
+        }
+        return connections;
     }
 }

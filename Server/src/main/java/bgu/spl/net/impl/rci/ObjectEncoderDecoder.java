@@ -8,6 +8,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 
 public class ObjectEncoderDecoder implements MessageEncoderDecoder<Serializable> {
