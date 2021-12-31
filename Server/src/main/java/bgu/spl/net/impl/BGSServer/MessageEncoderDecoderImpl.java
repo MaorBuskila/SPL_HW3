@@ -31,7 +31,7 @@ public class MessageEncoderDecoderImpl implements MessageEncoderDecoder<Message>
             opBytes[len++] = nextByte;
         }
         else{
-            bytes[len++] = nextByte;
+            bytes[(len++)-2] = nextByte;
         }
         if (len >= bytes.length) {
             bytes = Arrays.copyOf(bytes, len * 2);
@@ -47,10 +47,10 @@ public class MessageEncoderDecoderImpl implements MessageEncoderDecoder<Message>
 
     private Message popMessage() {
         String result = new String(bytes);
-        String[] arguments = result.split("\0");
+        String[] arguments = result.split("0");
         len = 0;
 
-        switch (opcode){
+        switch (1){
                  case 1: //register
                     return new Register(arguments[0], arguments[1] ,arguments[2]);
 //               case 2:

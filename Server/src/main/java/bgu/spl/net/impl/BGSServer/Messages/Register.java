@@ -19,7 +19,7 @@ public class Register implements Message{
         this.password = password;
         try {
             this.birthday = format.parse(birthday);
-        } catch (ParseException e) {
+        } catch (ParseException e) { //TODO Change birthday
             e.printStackTrace();
         }
     }
