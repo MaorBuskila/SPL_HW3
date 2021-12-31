@@ -1,4 +1,8 @@
 package bgu.spl.net.impl.BGSServer.Messages;
 
-public class Message {
+import bgu.spl.net.api.bidi.Connections;
+
+public interface Message {
+
+    void process(int connectionId, Connections connections);
 }
