@@ -9,7 +9,7 @@ public class ConnectionsImpl<T>  implements Connections<T> {
 
 
     private AtomicInteger idCounter = new AtomicInteger(0);
-    private ConcurrentHashMap<Integer , ConnectionHandler<T>> activeClient = new ConcurrentHashMap<>() ;
+    private ConcurrentHashMap<Integer , ConnectionHandler<T>> activeClient = new ConcurrentHashMap<>();
     @Override
     public boolean send(int connectionId, T msg) {
         if (activeClient.get(connectionId) == null)

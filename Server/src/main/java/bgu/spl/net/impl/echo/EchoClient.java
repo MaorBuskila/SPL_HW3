@@ -12,7 +12,7 @@ public class EchoClient {
     public static void main(String[] args) throws IOException {
 
         if (args.length == 0) {
-            args = new String[]{"127.0.0.1", "hello"};
+            args = new String[]{"127.0.0.1", "01maor0abc017-11-98;"};
         }
 
         if (args.length < 2) {
@@ -25,7 +25,7 @@ public class EchoClient {
                 BufferedReader in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
                 BufferedWriter out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()))) {
 
-            System.out.println("sending message to server");
+            System.out.println("sending message to server " + args[1]);
             out.write(args[1]);
             out.newLine();
             out.flush();

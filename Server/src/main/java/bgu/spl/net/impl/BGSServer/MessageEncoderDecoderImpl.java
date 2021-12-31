@@ -5,28 +5,27 @@ import bgu.spl.net.impl.BGSServer.Messages.Message;
 import bgu.spl.net.impl.BGSServer.Messages.Register;
 
 import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 //Should be T or not??????????
-public class BidiMessageEncoderDecoder implements MessageEncoderDecoder {
+public class MessageEncoderDecoderImpl implements MessageEncoderDecoder<Message> {
     private short opcode;
     private int len = 0;
     private byte[] bytes = new byte[1 << 10];
     private byte[] opBytes = new byte[2];
     @Override
-    public Object decodeNextByte(byte nextByte) {
+    public Message decodeNextByte(byte nextByte) {
 
         if (nextByte == ';') {
             return popMessage();
         }
         if (len == 2) {
-             opcode = convertToShort(opBytes);
+             opcode = bytesToShort(opBytes);
         }
         pushByte(nextByte);
         return null; //not a line yet
     }
-    
+
     private void pushByte(byte nextByte) {
         if (len < 2){
             opBytes[len++] = nextByte;
@@ -41,8 +40,9 @@ public class BidiMessageEncoderDecoder implements MessageEncoderDecoder {
     }
 
     @Override
-    public byte[] encode(Object message) {
-        return new byte[0];
+    public byte[] encode(Message message) {
+        String result = message.toString();
+        return result.getBytes();
     }
 
     private Message popMessage() {
@@ -73,10 +73,11 @@ public class BidiMessageEncoderDecoder implements MessageEncoderDecoder {
         }
         return null;
     }
-    private static short convertToShort(byte[] array) {
-        ByteBuffer buffer = ByteBuffer.wrap(array);
-        return buffer.getShort();
-
+    public short bytesToShort(byte[] byteArr)
+    {
+        short result = (short)((byteArr[0] & 0xff) << 8);
+        result += (short)(byteArr[1] & 0xff);
+        return result;
     }
 }
 
