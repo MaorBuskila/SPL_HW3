@@ -47,11 +47,11 @@ public class ConnectionsImpl<T>  implements Connections<T> {
         }
     }
     ///////// Connecction get instance for Non\Blocking connection handler/////////
-    private ConnectionsImpl<T> connections = null;
-    public  ConnectionsImpl<T> getInstance() {
-        if (connections == null) {
-            connections = new ConnectionsImpl<T>();
-        }
-        return connections;
-    }
+//    private ConnectionsImpl<T> connections = null;
+//    public  ConnectionsImpl<T> getInstance() {
+//        if (connections == null) {
+//            connections = new ConnectionsImpl<T>();
+//        }
+//        return connections;
+//    }
 }

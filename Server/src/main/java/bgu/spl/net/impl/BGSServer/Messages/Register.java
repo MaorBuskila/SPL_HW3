@@ -6,13 +6,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Register implements Message{
+public class Register extends Message{
 
     private  final int OPCODE = 1;
     private String username;
     private String password;
     private Date birthday;
-    private String pattern = "dd/MM/yyyy";
+    private String pattern = "dd-MM-yyyy";
     private SimpleDateFormat format = new SimpleDateFormat(pattern);
     public Register(String username, String password, String birthday) {
         this.username = username;
@@ -26,6 +26,6 @@ public class Register implements Message{
 
     @Override
     public void process(int connectionId, Connections connections) {
-       // connections.addClientConnection(connectionId,);
+        System.out.println("register");
     }
 }
