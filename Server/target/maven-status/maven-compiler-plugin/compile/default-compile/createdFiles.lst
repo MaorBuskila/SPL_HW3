@@ -1,9 +1,0 @@
-bgu/spl/net/impl/BGSServer/ConnectionsImpl.class
-bgu/spl/net/impl/BGSServer/Messages/ACKCommand.class
-bgu/spl/net/impl/BGSServer/Messages/Message.class
-bgu/spl/net/impl/BGSServer/BidiMessagingProtocolImpl.class
-bgu/spl/net/impl/BGSServer/DB.class
-bgu/spl/net/impl/BGSServer/MessageEncoderDecoderImpl.class
-bgu/spl/net/impl/BGSServer/User.class
-bgu/spl/net/impl/BGSServer/Messages/Register.class
-bgu/spl/net/impl/BGSServer/Messages/ACK.class

@@ -22,7 +22,7 @@ int main (int argc, char *argv[]) {
 	//From here we will see the rest of the ehco client implementation:
     //create 2 Threads for writing and reading
 
-    thread thread_writing = new thread(connec)
+//    thread thread_writing = new thread(connec)
 
 
 
