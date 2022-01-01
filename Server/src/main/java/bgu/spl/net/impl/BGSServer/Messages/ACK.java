@@ -1,6 +1,7 @@
 package bgu.spl.net.impl.BGSServer.Messages;
 
 import bgu.spl.net.api.bidi.Connections;
+import bgu.spl.net.impl.BGSServer.DB;
 
 public class ACK extends Message {
     private final short opcode = 10;
@@ -11,7 +12,7 @@ public class ACK extends Message {
         this.messageOPcode = messageOPcode;
     }
     @Override
-    public void process(int connectionId, Connections connections) {
+    public void process(int connectionId, Connections connections, DB database) {
 
     }
     public String toString()  {

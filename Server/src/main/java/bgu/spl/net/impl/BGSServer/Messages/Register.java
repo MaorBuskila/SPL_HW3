@@ -30,6 +30,7 @@ public class Register extends Message{
     public void process(int connectionId, Connections connections, DB database) {
         User user  = new User( username,  password,  birthday);
         database.registerClient(connectionId , user);
+        System.out.println("debug");
     }
 
 
