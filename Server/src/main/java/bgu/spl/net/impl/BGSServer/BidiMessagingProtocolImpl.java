@@ -7,6 +7,7 @@ import bgu.spl.net.impl.BGSServer.Messages.Message;
 public class BidiMessagingProtocolImpl<T> implements BidiMessagingProtocol<T> {
 
     private boolean shouldTerminate = false;
+    private static DB database = DB.getInstance();
     private Connections<T> connections;
     private int connectionId;
     @Override
@@ -20,7 +21,7 @@ public class BidiMessagingProtocolImpl<T> implements BidiMessagingProtocol<T> {
     @Override
     public void process(T message) {
     if (message instanceof Message) {
-        ((Message) message).process(connectionId, connections); //TODO:implment!!! this is just check
+        ((Message) message).process(connectionId, connections , database); //TODO:implment!!! this is just check
      }
     }
 
@@ -28,4 +29,5 @@ public class BidiMessagingProtocolImpl<T> implements BidiMessagingProtocol<T> {
     public boolean shouldTerminate() {
         return false;
     }
+
 }

@@ -6,7 +6,7 @@ public class DB {
 
     private ConcurrentHashMap<Integer,User> registerUsers = new ConcurrentHashMap();
 
-        private static DB database = null;
+    private static DB database = null;
     public static DB getInstance() {
         if (database == null) {
             database = new DB();

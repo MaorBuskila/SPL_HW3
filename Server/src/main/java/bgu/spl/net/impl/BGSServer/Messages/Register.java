@@ -27,9 +27,9 @@ public class Register extends Message{
     }
 
     @Override
-    public void process(int connectionId, Connections connections) {
+    public void process(int connectionId, Connections connections, DB database) {
         User user  = new User( username,  password,  birthday);
-        connections.getDatabase().
+        database.registerClient(connectionId , user);
     }
 
 

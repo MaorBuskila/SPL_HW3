@@ -9,7 +9,6 @@ public class ConnectionsImpl<T>  implements Connections<T> {
 
 
 //    private AtomicInteger idCounter = new AtomicInteger(0);
-    private static DB database = DB.getInstance();
     private ConcurrentHashMap<Integer , ConnectionHandler<T>> activeClient = new ConcurrentHashMap<>();
     @Override
     public boolean send(int connectionId, T msg) {
@@ -48,9 +47,6 @@ public class ConnectionsImpl<T>  implements Connections<T> {
         }
     }
 
-    public static DB getDatabase() {
-        return database;
-    }
 
     ///////// Connecction get instance for Non\Blocking connection handler/////////
 //    private ConnectionsImpl<T> connections = null;
