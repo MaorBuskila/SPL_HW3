@@ -39,6 +39,12 @@ public class User {
     {
         return isLogIn;
     }
+    public void login(){
+        isLogIn =true;
+    }
+    public void logout(){
+        isLogIn =false;
+    }
     public String getPassword()
     {
         return password;
@@ -55,16 +61,32 @@ public class User {
         followers.put(id,user);
 
     }
-    public void addFollowing(int id,User user)
-    {
+
+    public void removeFollower(int userId, User user) {
+    }
+    public void addFollowing(int id,User user) {
         following.put(id,user);
         followTime.put(user,new Timestamp(System.currentTimeMillis()));
     }
+    public void removeFollowing(int id,User user) {
+        following.remove(id,user);
+        followTime.remove(user,new Timestamp(System.currentTimeMillis()));
+    }
+
+
+
+    ///////////////Getters/////////////
     public int getAge()
     {
         //TODO why The ---------------------------------------
        return Period.between(LocalDate.of(birthday.getYear(),birthday.getMonth(),birthday.getDay()), LocalDate.now()).getYears();
     }
+
+    public String getUsername() {
+        return username;
+    }
+
+
     public void post()
     {
         numberOfPost++;

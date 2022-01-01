@@ -47,6 +47,9 @@ public class ConnectionsImpl<T>  implements Connections<T> {
         }
     }
 
+    public ConcurrentHashMap<Integer, ConnectionHandler<T>> getActiveClient() {
+        return activeClient;
+    }
 
     ///////// Connecction get instance for Non\Blocking connection handler/////////
 //    private ConnectionsImpl<T> connections = null;

@@ -1,8 +1,7 @@
 package bgu.spl.net.impl.BGSServer;
 
 import bgu.spl.net.api.MessageEncoderDecoder;
-import bgu.spl.net.impl.BGSServer.Messages.Message;
-import bgu.spl.net.impl.BGSServer.Messages.Register;
+import bgu.spl.net.impl.BGSServer.Messages.*;
 
 import java.nio.ByteBuffer;
 import java.util.Arrays;
@@ -47,18 +46,18 @@ public class MessageEncoderDecoderImpl implements MessageEncoderDecoder<Message>
 
     private Message popMessage() {
         String result = new String(bytes);
-        String[] arguments = result.split("0");
+        String[] arguments = result.split("0"); //TODO:change to  "\0" !!!!!!!!!!!!!!!!!!!!!!!!!! this is just check for echo
         len = 0;
 
-        switch (1){
+        switch (4){
                  case 1: //register
                     return new Register(arguments[0], arguments[1] ,arguments[2]);
-//               case 2:
-//                   return new Login();
-//               case 3:
-//                   return new Logout();
-//               case 4:
-//                   return new Follow();
+               case 2:
+                   return new Login(arguments[0], arguments[1] , arguments[2]);
+               case 3:
+                   return new Logout();
+               case 4:
+                   return new Follow(arguments[0].getBytes()[0], arguments[1]);
 //                case 5:
 //                    return new Post();
 //                case 6:

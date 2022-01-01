@@ -12,7 +12,7 @@ public class EchoClient {
     public static void main(String[] args) throws IOException {
 
         if (args.length == 0) {
-            args = new String[]{"127.0.0.1", "01maor0abc017-11-98;"};
+            args = new String[]{"127.0.0.1", "040maor;"};
         }
 
         if (args.length < 2) {

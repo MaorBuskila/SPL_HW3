@@ -5,5 +5,5 @@ import bgu.spl.net.impl.BGSServer.DB;
 
 public abstract class Message {
 
-    public abstract void process(int connectionId, Connections connectionsת , DB database);
+    public abstract void process(int connectionId, Connections connections , DB database);
 }
