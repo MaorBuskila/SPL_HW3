@@ -1,4 +1,10 @@
 package bgu.spl.net.impl.BGSServer.Messages;
 
-public class Logstat {
+import bgu.spl.net.api.bidi.Connections;
+
+public class Logstat extends Message {
+    @Override
+    public void process(int connectionId, Connections connections) {
+
+    }
 }

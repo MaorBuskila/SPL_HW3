@@ -1,6 +1,8 @@
 package bgu.spl.net.impl.BGSServer.Messages;
 
 import bgu.spl.net.api.bidi.Connections;
+import bgu.spl.net.impl.BGSServer.DB;
+import bgu.spl.net.impl.BGSServer.User;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -26,6 +28,9 @@ public class Register extends Message{
 
     @Override
     public void process(int connectionId, Connections connections) {
-        System.out.println("register");
+        User user  = new User( username,  password,  birthday);
+        connections.getDatabase().
     }
+
+
 }
