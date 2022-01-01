@@ -2,7 +2,7 @@ package bgu.spl.net.impl.BGSServer.Messages;
 
 import bgu.spl.net.api.bidi.Connections;
 
-public class ACK implements Message {
+public class ACK extends Message {
     private final short opcode = 10;
     private short messageOPcode;
 

@@ -6,7 +6,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Register implements Message{
+public class Register extends Message{
 
     private  final int OPCODE = 1;
     private String username;

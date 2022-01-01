@@ -2,6 +2,7 @@ package bgu.spl.net.impl.BGSServer;
 
 import bgu.spl.net.api.bidi.BidiMessagingProtocol;
 import bgu.spl.net.api.bidi.Connections;
+import bgu.spl.net.impl.BGSServer.Messages.Message;
 
 public class BidiMessagingProtocolImpl<T> implements BidiMessagingProtocol<T> {
     @Override
@@ -11,6 +12,10 @@ public class BidiMessagingProtocolImpl<T> implements BidiMessagingProtocol<T> {
 
     @Override
     public void process(T message) {
+        if(message instanceof Message)
+        {
+            ((Message)message).process();
+        }
 
     }
 
