@@ -22,5 +22,7 @@ public class Logstat extends Message {
             }
         }
 
+        for (User user : database.getRegisterUsers())
+
     }
 }
