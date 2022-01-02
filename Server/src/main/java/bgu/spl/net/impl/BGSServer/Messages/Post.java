@@ -40,6 +40,11 @@ public class Post extends Message {
 
     }
 
+    @Override
+    public byte[] encode() {
+        return new byte[0];
+    }
+
     public void extractUsers (String tmpContent){
         while (tmpContent.contains("@")){
             int tmp = tmpContent.indexOf("@");

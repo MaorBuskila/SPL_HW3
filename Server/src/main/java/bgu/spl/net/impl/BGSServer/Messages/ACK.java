@@ -15,6 +15,6 @@ public class ACK{
     }
 
     public String toString()  {
-        return "ACK " + messageOPcode;
+        return "ACK " + messageOPcode+optional.toString();
     }
 }

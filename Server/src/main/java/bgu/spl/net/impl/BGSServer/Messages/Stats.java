@@ -4,6 +4,8 @@ import bgu.spl.net.api.bidi.Connections;
 import bgu.spl.net.impl.BGSServer.DB;
 import bgu.spl.net.impl.BGSServer.User;
 
+import static bgu.spl.net.impl.BGSServer.MessageEncoderDecoderImpl.shortToBytes;
+
 
 public class Stats extends Message{
     private final short OPCODE = 8;
@@ -22,17 +24,29 @@ public class Stats extends Message{
             Error errorMessage = new Error(OPCODE);
             connections.send(connectionId, errorMessage);
         } else {
-            for (User tmpUser : database.getRegisterUsers().values()) {
-                if (tmpUser.isRegistered()) {
-                    bytes[0] = shortToBytes(user.getAge());
-                    bytes[1] = shortToBytes(user.getNumberOfPost());
-                    bytes[2] = shortToBytes(user.getNumberOfFollowers());
-                    bytes[3] = shortToBytes(user.getNumberOfFollowing());
-                    ACK ackMessage = new ACK(OPCODE, bytes);
+            for (String tmpUserName : listOfUserNames) {
+                int tmpUserNameID = database.getConnectionID_userName().get(tmpUserName);
+                User listUser = database.getRegisterUsers().get(tmpUserNameID);
+                if (listUser!=null) {
+                    bytes[0] = shortToBytes(listUser.getAge());
+                    bytes[1] = shortToBytes(listUser.getNumberOfPost());
+                    bytes[2] = shortToBytes(listUser.getNumberOfFollowers());
+                    bytes[3] = shortToBytes(listUser.getNumberOfFollowing());
+                    ACK ackMessage = new ACK(OPCODE, bytes); // TODO Fix it
                     connections.send(connectionId, ackMessage);
+                }
+                else {
+                    Error errorMessage = new Error(OPCODE);
+                    connections.send(connectionId, errorMessage);
+                    return;
                 }
             }
         }
 
+    }
+
+    @Override
+    public byte[] encode() {
+        return new byte[0];
     }
 }

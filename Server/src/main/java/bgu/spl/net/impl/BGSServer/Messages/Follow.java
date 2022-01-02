@@ -34,6 +34,11 @@ public class Follow extends Message {
             connections.send(connectionId, errorMessage);
         }
     }
+
+    @Override
+    public byte[] encode() {
+        return new byte[0];
+    }
 }
     
 

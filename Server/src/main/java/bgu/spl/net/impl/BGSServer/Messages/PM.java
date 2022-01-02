@@ -46,11 +46,16 @@ public class PM extends Message {
                 filteredMessage.replaceAll(s,"<filtered>");
             }
             database.addMessage(filteredMessage);
-            ACK ackMessage = new ACK(OPCODE);
+            ACK ackMessage = new ACK(OPCODE,null); //TODO Fix it
             connections.send(connectionId , ackMessage);
             //TODO notification
             // Notification notificationMessage=new Notification()
         }
 
+    }
+
+    @Override
+    public byte[] encode() {
+        return new byte[0];
     }
 }

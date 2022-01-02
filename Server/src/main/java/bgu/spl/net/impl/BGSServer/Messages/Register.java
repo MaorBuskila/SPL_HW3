@@ -40,5 +40,10 @@ public class Register extends Message{
         }
     }
 
+    @Override
+    public byte[] encode() {
+        return new byte[0];
+    }
+
 
 }

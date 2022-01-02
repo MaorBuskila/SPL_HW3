@@ -34,4 +34,9 @@ public class Login extends Message {
                 connections.send(connectionId , ackMessage);
             }
     }
+
+    @Override
+    public byte[] encode() {
+        return new byte[0];
+    }
 }
