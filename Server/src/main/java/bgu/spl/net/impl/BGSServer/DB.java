@@ -25,6 +25,7 @@ public class DB {
     public void registerClient(int connectionId, User user) {
         registerUsers.put(connectionId, user);
         connectionID_userName.put(user.getUsername(), connectionId);
+        user.register();
 
     }
     public void addMessage(String message)
@@ -82,4 +83,12 @@ public class DB {
     {
         return registerUsers.containsKey(connectionId);
     }
+    public byte[] shortToBytes(short num)
+    {
+        byte[] bytesArr = new byte[2];
+        bytesArr[0] = (byte)((num >> 8) & 0xFF);
+        bytesArr[1] = (byte)(num & 0xFF);
+        return bytesArr;
+    }
+
 }

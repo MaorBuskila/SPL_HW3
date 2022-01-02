@@ -1,6 +1,7 @@
 package bgu.spl.net.impl.BGSServer;
 
 import java.sql.Timestamp;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.Date;
@@ -19,7 +20,7 @@ public class User {
     private Date birthday;
     private boolean isRegister=false;
     private boolean isLogIn=false;
-    private int numberOfPost=0;
+    private short numberOfPost=0;
     //TODO TimeStamp
     private ConcurrentHashMap<User, Timestamp> followTime;
     private ConcurrentHashMap<User,Timestamp> timeLastMessageRecieved;
@@ -45,6 +46,13 @@ public class User {
     }
     public void logout(){
         isLogIn =false;
+    }
+    public void register()
+    {
+        isRegister=true;
+    }
+    public void unregister(){
+        isRegister=false;
     }
     public String getPassword() {
         return password;
@@ -80,10 +88,10 @@ public class User {
     }
 
     ///////////////Getters/////////////
-    public int getAge()
+    public short getAge()
     {
         //TODO why The ---------------------------------------
-       return Period.between(LocalDate.of(birthday.getYear(),birthday.getMonth(),birthday.getDay()), LocalDate.now()).getYears();
+       return (short) Period.between(LocalDate.of(birthday.getYear(),birthday.getMonth(),birthday.getDay()), LocalDate.now()).getYears();
     }
 
     public String getUsername() {
@@ -95,17 +103,17 @@ public class User {
     {
         numberOfPost++;
     }
-    public int  getNumberOfPost()
+    public short  getNumberOfPost()
     {
         return numberOfPost;
     }
-    public int getNumberOfFollowers()
+    public short getNumberOfFollowers()
     {
-        return followers.size();
+        return (short)followers.size();
     }
-    public int getNumberOfFollowing()
+    public short getNumberOfFollowing()
     {
-        return following.size();
+        return (short)following.size();
     }
     public void addBlockMe(User user)
     {

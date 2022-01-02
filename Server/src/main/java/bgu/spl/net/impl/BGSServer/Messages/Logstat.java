@@ -6,23 +6,26 @@ import bgu.spl.net.impl.BGSServer.User;
 
 public class Logstat extends Message {
     private final short OPCODE = 7;
+
     @Override
     public void process(int connectionId, Connections connections, DB database) {
-        String[] arguments = new String[4];
-        User user  = database.getRegisterUsers().get(connectionId);
-        if(user == null || !user.isLoggedIn()) {
+        byte[][] bytes = new byte[4][2];
+        User user = database.getRegisterUsers().get(connectionId);
+        if (user == null || !user.isLoggedIn()) {
             Error errorMessage = new Error(OPCODE);
             connections.send(connectionId, errorMessage);
-        }
-        else {
+        } else {
             for (User tmpUser : database.getRegisterUsers().values()) {
-                if (tmpUser.isLoggedIn()){
-                    arguments[0] = user.getAge();
+                if (tmpUser.isLoggedIn()) {
+                    bytes[0] = shortToBytes(user.getAge());
+                    bytes[1] = shortToBytes(user.getNumberOfPost());
+                    bytes[2] = shortToBytes(user.getNumberOfFollowers());
+                    bytes[3] = shortToBytes(user.getNumberOfFollowing());
+                    ACK ackMessage = new ACK(OPCODE, bytes);
+                    connections.send(connectionId, ackMessage);
                 }
             }
         }
-
-        for (User user : database.getRegisterUsers())
 
     }
 }
