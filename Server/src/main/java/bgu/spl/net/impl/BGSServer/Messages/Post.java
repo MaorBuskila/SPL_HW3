@@ -23,7 +23,7 @@ public class Post extends Message {
             connections.send(connectionId, errorMessage);
         }
         else {
-
+            user.post();
            for(User tmpuser : user.getFollowers().values()){
                tmpuser.addMessage(content);
            }

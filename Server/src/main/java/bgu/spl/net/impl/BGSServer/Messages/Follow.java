@@ -2,7 +2,6 @@ package bgu.spl.net.impl.BGSServer.Messages;
 
 import bgu.spl.net.api.bidi.Connections;
 import bgu.spl.net.impl.BGSServer.DB;
-import bgu.spl.net.srv.ConnectionHandler;
 
 public class Follow extends Message {
     //todo: check what happen if client have the same username?? does he follow all of them?
@@ -28,7 +27,7 @@ public class Follow extends Message {
 
         }
         if (command) {
-            ACK ackMessage = new ACK(OPCODE);
+            ACK ackMessage = new ACK(OPCODE, null);
             connections.send(connectionId, ackMessage);
         } else {
             Error errorMessage = new Error(OPCODE);

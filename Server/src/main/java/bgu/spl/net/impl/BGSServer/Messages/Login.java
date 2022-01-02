@@ -30,7 +30,7 @@ public class Login extends Message {
             }
              else {
                 user.login();
-                ACK ackMessage = new ACK(OPCODE);
+                ACK ackMessage = new ACK(OPCODE, null);
                 connections.send(connectionId , ackMessage);
             }
     }
