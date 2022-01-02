@@ -111,11 +111,9 @@ public class User {
     {
         usersThatBlockMe.add(user);
     }
-    public boolean isBlockedMe(User user)
-    {
+    public boolean isBlockedMe(User user) {
         return usersThatBlockMe.contains(user);
     }
-
 
 
 }

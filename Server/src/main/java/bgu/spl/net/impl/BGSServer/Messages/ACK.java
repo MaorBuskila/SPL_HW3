@@ -6,6 +6,7 @@ import bgu.spl.net.impl.BGSServer.DB;
 public class ACK{
     private final short OPCODE = 10;
     private short messageOPcode;
+    private
 
     public ACK(short messageOPcode) {
         this.messageOPcode = messageOPcode;

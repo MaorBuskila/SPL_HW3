@@ -1,11 +1,16 @@
 package bgu.spl.net.impl.BGSServer;
 
+import bgu.spl.net.impl.BGSServer.Messages.Message;
+
+import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class DB {
 
     private ConcurrentHashMap<Integer, User> registerUsers = new ConcurrentHashMap();
     private ConcurrentHashMap<String, Integer> connectionID_userName = new ConcurrentHashMap();
+    private Vector<String> pmAndPostMessages=new Vector<>();
+    private String[] forbiddenWords=new String[]{"Adir","Trump","Maor" } ;
 
     private static DB database = null;
 
@@ -21,6 +26,10 @@ public class DB {
         registerUsers.put(connectionId, user);
         connectionID_userName.put(user.getUsername(), connectionId);
 
+    }
+    public void addMessage(String message)
+    {
+        pmAndPostMessages.add(message);
     }
 
     public boolean follow(int userId, String followUserName) {
@@ -57,7 +66,20 @@ public class DB {
         return registerUsers;
     }
 
+    public String[] getForbiddenWords() {
+        return forbiddenWords;
+    }
+
     public ConcurrentHashMap<String, Integer> getConnectionID_userName() {
         return connectionID_userName;
+    }
+
+    public User getUser(int connectionId)
+    {
+        return registerUsers.get(connectionId);
+    }
+    public boolean isRegistered(int connectionId)
+    {
+        return registerUsers.containsKey(connectionId);
     }
 }

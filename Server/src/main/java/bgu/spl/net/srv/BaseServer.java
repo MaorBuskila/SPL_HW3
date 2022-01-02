@@ -7,6 +7,7 @@ import bgu.spl.net.impl.BGSServer.ConnectionsImpl;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Vector;
 import java.util.function.Supplier;
 
 public abstract class BaseServer<T> implements Server<T> {
@@ -15,6 +16,7 @@ public abstract class BaseServer<T> implements Server<T> {
     private final Supplier<BidiMessagingProtocol<T>> protocolFactory;
     private final Supplier<MessageEncoderDecoder<T>> encdecFactory;
     private ServerSocket sock;
+
 
     //Added:
     private final ConnectionsImpl<T> connection = new ConnectionsImpl<T>();
@@ -28,6 +30,9 @@ public abstract class BaseServer<T> implements Server<T> {
         this.protocolFactory = protocolFactory;
         this.encdecFactory = encdecFactory;
 		this.sock = null;
+
+
+
 //        connections = ConnectionsImpl.getInstance();
     }
 
