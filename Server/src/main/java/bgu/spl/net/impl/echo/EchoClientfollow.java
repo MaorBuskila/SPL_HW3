@@ -1,19 +1,15 @@
 package bgu.spl.net.impl.echo;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.net.Socket;
 
-public class EchoClient {
+public class EchoClientfollow {
 
     public static void main(String[] args) throws IOException {
 
         if (args.length == 0) {
-//            args = new String[]{"127.0.0.1", "040maor;"};
-            args = new String[]{"127.0.0.1", "01maor0abc017-11-98;"};
+            args = new String[]{"127.0.0.1", "040maor;"};
+//            args = new String[]{"127.0.0.1", "01maor0abc017-11-98;"};
         }
 
         if (args.length < 2) {

@@ -2,10 +2,11 @@ package bgu.spl.net.impl.BGSServer.Messages;
 
 import bgu.spl.net.api.bidi.Connections;
 import bgu.spl.net.impl.BGSServer.DB;
+import bgu.spl.net.impl.BGSServer.User;
 
 public class Login extends Message {
 
-    private final int OPCODE = 2;
+    private final Short OPCODE = 2;
     private String username;
     private String password;
     private String captcha;
@@ -18,15 +19,19 @@ public class Login extends Message {
 
     @Override
     public void process(int connectionId, Connections connections, DB database) {
-        {
+        User user =  database.getRegisterUsers().get(connectionId);
             //Check if the user Exist if not Error
-
             //check if password are right if not Error
-            //check if he is already logged in if yes Error
-            if (captcha.equals("0")) {
-                //drop error
-            } else {
+            //check if he is already logged in
+            if (user == null || user.getPassword().equals(password) || captcha.equals("0") || user.isLoggedIn()) {
+                //TODO: drop error
+                Error errorMessage = new Error(OPCODE);
+                connections.send(connectionId , errorMessage);
             }
-        }
+             else {
+                user.login();
+                ACK ackMessage = new ACK(OPCODE);
+                connections.send(connectionId , ackMessage);
+            }
     }
 }

@@ -10,7 +10,7 @@ import java.util.Date;
 
 public class Register extends Message{
 
-    private  final int OPCODE = 1;
+    private  final short OPCODE = 1;
     private String username;
     private String password;
     private Date birthday;
@@ -28,9 +28,16 @@ public class Register extends Message{
 
     @Override
     public void process(int connectionId, Connections connections, DB database) {
-        User user  = new User( username,  password,  birthday);
-        database.registerClient(connectionId , user);
-        System.out.println("debug");
+        if (!database.getRegisterUsers().contains(connectionId) || database.getConnectionID_userName().contains(this.username)) {
+            User user = new User(username, password, birthday);
+            database.registerClient(connectionId, user);
+            ACK ackMessage = new ACK(OPCODE);
+            connections.send(connectionId , ackMessage);
+        }
+        else{
+            Error errorMessage = new Error(OPCODE);
+            connections.send(connectionId , errorMessage);
+        }
     }
 
 

@@ -5,14 +5,15 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.Date;
 import java.util.Vector;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class User {
 
 
     private ConcurrentHashMap <Integer , User> followers;
     private ConcurrentHashMap <Integer, User> following;
-    //private ConcurrentHashMap <String , User>
     private String username;
     private String password;
     private Date birthday;
@@ -23,6 +24,7 @@ public class User {
     private ConcurrentHashMap<User, Timestamp> followTime;
     private ConcurrentHashMap<User,Timestamp> timeLastMessageRecieved;
     private Vector<User> usersThatBlockMe;
+    private BlockingQueue<String> messages;
 
     public User(String username, String password, Date birthday) {
         this.username = username;
@@ -30,13 +32,12 @@ public class User {
         this.birthday = birthday;
         this.followers = new ConcurrentHashMap<>();
         this.following = new ConcurrentHashMap<>();
+        this.messages = new LinkedBlockingQueue();
     }
-    public boolean isRegistered()
-    {
+    public boolean isRegistered() {
         return isRegister;
     }
-    public boolean isLoggedIn()
-    {
+    public boolean isLoggedIn() {
         return isLogIn;
     }
     public void login(){
@@ -45,8 +46,7 @@ public class User {
     public void logout(){
         isLogIn =false;
     }
-    public String getPassword()
-    {
+    public String getPassword() {
         return password;
     }
     public ConcurrentHashMap<Integer, User> getFollowers() {
@@ -56,10 +56,8 @@ public class User {
     public ConcurrentHashMap<Integer, User> getFollowing() {
         return following;
     }
-    public void addFollower(int id,User user)
-    {
+    public void addFollower(int id,User user) {
         followers.put(id,user);
-
     }
 
     public void removeFollower(int userId, User user) {
@@ -73,7 +71,13 @@ public class User {
         followTime.remove(user,new Timestamp(System.currentTimeMillis()));
     }
 
-
+    public void addMessage(String message) {
+        try {
+            messages.put(message);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 
     ///////////////Getters/////////////
     public int getAge()

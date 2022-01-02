@@ -3,12 +3,15 @@ package bgu.spl.net.impl.BGSServer;
 import bgu.spl.net.api.MessageEncoderDecoder;
 import bgu.spl.net.impl.BGSServer.Messages.*;
 
+import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 //Should be T or not??????????
 public class MessageEncoderDecoderImpl implements MessageEncoderDecoder<Message> {
     private short opcode;
+    private int opcodeint;
     private int len = 0;
     private byte[] bytes = new byte[1 << 10];
     private byte[] opBytes = new byte[2];
@@ -19,7 +22,8 @@ public class MessageEncoderDecoderImpl implements MessageEncoderDecoder<Message>
             return popMessage();
         }
         if (len == 2) {
-             opcode = bytesToShort(opBytes);
+//             opcode = bytesToShort(opBytes);
+            opcodeint = changethissssss(opBytes);
         }
         pushByte(nextByte);
         return null; //not a line yet
@@ -45,21 +49,27 @@ public class MessageEncoderDecoderImpl implements MessageEncoderDecoder<Message>
     }
 
     private Message popMessage() {
-        String result = new String(bytes);
-        String[] arguments = result.split("0"); //TODO:change to  "\0" !!!!!!!!!!!!!!!!!!!!!!!!!! this is just check for echo
+        String result = null;
+        try {
+            result = new String(bytes , "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        String[] arguments = result.split("0");//TODO:change to  "\0" !!!!!!!!!!!!!!!!!!!!!!!!!! this is just check for echo
+//        String[] arguments = result.split('\0');
         len = 0;
-
-        switch (4){
-                 case 1: //register
+        //switch (opcode){ todo:ORGINAL!!
+        switch (opcodeint){
+                case 1: //register
                     return new Register(arguments[0], arguments[1] ,arguments[2]);
                case 2:
                    return new Login(arguments[0], arguments[1] , arguments[2]);
                case 3:
                    return new Logout();
                case 4:
-                   return new Follow(arguments[0].getBytes()[0], arguments[1]);
-//                case 5:
-//                    return new Post();
+                   return new Follow(arguments[0], arguments[1]);
+                case 5:
+                    return new Post(arguments[0]);
 //                case 6:
 //                    return new PM():
 //                case 7:
@@ -78,5 +88,12 @@ public class MessageEncoderDecoderImpl implements MessageEncoderDecoder<Message>
         result += (short)(byteArr[1] & 0xff);
         return result;
     }
+
+    public int changethissssss(byte[] byteArr) {
+        String text = new String(byteArr, StandardCharsets.US_ASCII); // "129"
+        int value = Integer.parseInt(text);
+        return value;
+    }
+
 }
 

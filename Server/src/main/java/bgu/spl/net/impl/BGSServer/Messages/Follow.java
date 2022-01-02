@@ -4,39 +4,40 @@ import bgu.spl.net.api.bidi.Connections;
 import bgu.spl.net.impl.BGSServer.DB;
 import bgu.spl.net.srv.ConnectionHandler;
 
-public class Follow extends Message{
-//todo: check what happen if client have the same username?? does he follow all of them?
-    private byte follow;
+public class Follow extends Message {
+    //todo: check what happen if client have the same username?? does he follow all of them?
+    //todo:change String follow to byte
+    private String follow;
     private String username;
-    public Follow(byte follow,String username)
-    {
-        this.follow=follow;
-        this.username=username;
+    private final short OPCODE = 4;
+
+    public Follow(String follow, String username) {
+        this.follow = follow;
+        this.username = String.valueOf(username);
+        System.out.println("debug");
     }
 
     @Override
     public void process(int connectionId, Connections connections, DB database) {
-
-        if(follow==0) { // this is a follow command
-            //check if the username want to follow is log in
-        boolean command = database.follow(connectionId, username);
-
-
-            //follow if its ok
-            //error or ACK messeage
+        boolean command;
+        if (follow.equals("0")) { // follow command
+            command = database.follow(connectionId, username);
         }
-        else // this is unfollow command
-        {
-            boolean command = database.unfollow(connectionId, username);
-            //check that he is follow him
-            //check if the username want to follow is log in
-            //unfollow if can
-            //error or ACK MEsseage
+        else { // unfollow command
+            command = database.unfollow(connectionId, username);
 
+        }
+        if (command) {
+            ACK ackMessage = new ACK(OPCODE);
+            connections.send(connectionId, ackMessage);
+        } else {
+            Error errorMessage = new Error(OPCODE);
+            connections.send(connectionId, errorMessage);
         }
     }
+}
     
 
 
 
-}
+
