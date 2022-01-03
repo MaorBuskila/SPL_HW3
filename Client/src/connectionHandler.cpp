@@ -118,8 +118,8 @@ void ConnectionHandler::shortToBytes(short num, char* bytesArr)
  
 bool ConnectionHandler::sendFrameAscii(const std::string& frame, char delimiter) {
 
-
-    char byteArray[frame.length()];
+    int diffrence=frame.find(" ")-1;
+    char byteArray[frame.length()-diffrence];
     char *byteArrayPointer=&byteArray[0];
     string line=frame.substr(0,line.find(delimiter,0)-1);
     vector<string> args=split(line);
@@ -133,10 +133,8 @@ bool ConnectionHandler::sendFrameAscii(const std::string& frame, char delimiter)
     {
         short OPCODE=1;
         shortToBytes(OPCODE,byteArrayPointer);
-        byteArrayPointer+=2;
-        byteArray[2]='\0';
         string username=args[1];
-        int i=3;
+        int i=2;
         for(char c:username)
         {
             byteArray[i++]=c;
@@ -147,6 +145,7 @@ bool ConnectionHandler::sendFrameAscii(const std::string& frame, char delimiter)
         {
             byteArray[i++]=c;
         }
+        byteArray[i++]='\0';
         string birtday=args[3];
         for(char c:birtday)
         {
@@ -158,23 +157,69 @@ bool ConnectionHandler::sendFrameAscii(const std::string& frame, char delimiter)
     }
     if(type=="LOGIN")
     {
+        short OPCODE=2;
+        shortToBytes(OPCODE,byteArrayPointer);
+        string username=args[1];
+        int i=2;
+        for(char c:username)
+        {
+            byteArray[i++]=c;
+        }
+        byteArray[i++]='\0';
+        string password=args[2];
+        for(char c:password)
+        {
+            byteArray[i++]=c;
+        }
+        byteArray[i++]='\0';
+        string captcha=args[3];
+       byteArray[i++]=captcha[0];
+       byteArray[i]=';';
 
     }
     if(type=="LOGOUT")
-    {}
+    {
+        short OPCODE=3;
+        shortToBytes(OPCODE,byteArrayPointer);
+
+    }
     if(type=="FOLLOW")
-    {}
+    {
+        short OPCODE=4;
+        shortToBytes(OPCODE,byteArrayPointer);
+        int i=2;
+        string followOrUn=args[1];
+        byteArray[i++]=followOrUn[0];
+        string username=args[2];
+        for(char c:username)
+        {
+            byteArray[i++]=c;
+        }
+        byteArray[i]=';';
+
+    }
+    if(type=="POST")
+    {
+        short OPCODE=5;
+        shortToBytes(OPCODE,byteArrayPointer);
+        int i=2;
+        string content=args[1];
+        for(char c:content)
+        {
+            byteArray[i++]=c;
+        }
+        byteArray[i++]='\0';
+        byteArray[i]=';';
+    }
+    if(type=="PM")
+    {
+    }
     if(type=="STATS")
     {}
     if(type=="LOGSTAT")
     {}
-    if(type=="UNFOLLOW")
-    {}
-    if(type=="POST")
-    {}
-    if(type=="PM")
-    {
-    }
+
+
     if(type=="BLOCK")
     {}
 

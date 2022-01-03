@@ -25,10 +25,11 @@ int main(int argc, char *argv[]) {
 
     std::thread write_thread([connectionHandler] {
         while (1) {
-            const short bufsize = 1024;
-            char buf[bufsize];
-            std::cin.getline(buf, bufsize);
-            std::string line(buf);
+//            const short bufsize = 1024;
+//            char buf[bufsize];
+//            std::cin.getline(buf, bufsize);
+//            std::string line(buf);
+            string line="REGISTER adirelad 101 11-11-1998";
             int len = line.length();
             connectionHandler->sendLine(line); //appends '\n' to the message. Therefor we send len+1 bytes.
             std::cout << "Sent " << len + 1 << " bytes to server" << std::endl;
@@ -61,6 +62,8 @@ int main(int argc, char *argv[]) {
             }
         }
     });
+    write_thread.join();
+    read_thread.join();
 //    while (1) {
 //        const short bufsize = 1024;
 //        char buf[bufsize];
