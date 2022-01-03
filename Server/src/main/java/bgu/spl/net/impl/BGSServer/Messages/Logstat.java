@@ -24,7 +24,7 @@ public class Logstat extends Message {
                     bytes[1] = shortToBytes(user.getNumberOfPost());
                     bytes[2] = shortToBytes(user.getNumberOfFollowers());
                     bytes[3] = shortToBytes(user.getNumberOfFollowing());
-                    ACK ackMessage = new ACK(OPCODE, bytes); // TODO Fix it
+                    ACK ackMessage = new ACK(OPCODE, bytes);
                     connections.send(connectionId, ackMessage);
                 }
             }

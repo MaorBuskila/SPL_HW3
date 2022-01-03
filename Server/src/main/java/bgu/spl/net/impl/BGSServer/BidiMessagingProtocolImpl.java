@@ -26,7 +26,7 @@ public class BidiMessagingProtocolImpl<T> implements BidiMessagingProtocol<T> {
     @Override
     public void process(T message) {
     if (message instanceof Message) {
-        ((Message) message).process(connectionId, connections , database); //TODO:finish
+        ((Message) message).process(connectionId, connections , database); //TODO:finish notification
      }
     }
 

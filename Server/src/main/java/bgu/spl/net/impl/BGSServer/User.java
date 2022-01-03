@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.Vector;
 import java.util.concurrent.BlockingQueue;
@@ -90,9 +91,11 @@ public class User {
     ///////////////Getters/////////////
     public short getAge()
     {
-        //TODO why The ---------------------------------------
-       return (short) Period.between(LocalDate.of(birthday.getYear(),birthday.getMonth(),birthday.getDay()), LocalDate.now()).getYears();
+
+        LocalDate localDate = birthday.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        return (short)(Period.between(localDate, LocalDate.now()).getYears());
     }
+
 
     public String getUsername() {
         return username;

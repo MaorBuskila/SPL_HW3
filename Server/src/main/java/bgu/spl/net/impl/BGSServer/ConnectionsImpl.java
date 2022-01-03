@@ -37,7 +37,7 @@ public class ConnectionsImpl<T>  implements Connections<T> {
     public void disconnect(int connectionId) {
         if (activeClient.contains(connectionId)) {
             System.out.println("Client - " + connectionId + " disconnected");
-            activeClient.remove(connectionId); //Todo:check
+            activeClient.remove(connectionId);
         }
 
     }

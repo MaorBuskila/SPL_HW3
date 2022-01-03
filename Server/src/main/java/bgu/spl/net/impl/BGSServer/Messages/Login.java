@@ -24,7 +24,6 @@ public class Login extends Message {
             //check if password are right if not Error
             //check if he is already logged in
             if (user == null || user.getPassword().equals(password) || captcha.equals("0") || user.isLoggedIn()) {
-                //TODO: drop error
                 Error errorMessage = new Error(OPCODE);
                 connections.send(connectionId , errorMessage);
             }

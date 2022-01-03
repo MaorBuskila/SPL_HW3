@@ -29,28 +29,36 @@ public class ACK extends Message{
 
     public byte[] encode()
     {
-        byte[] byteArray=new byte[4+optional.length*optional[0].length];
-     //   byte[] postUser=this.postingUser.getBytes(StandardCharsets.UTF_8);
-       // byte[] conTent=this.content.getBytes(StandardCharsets.UTF_8);
-        byteArray[0]= shortToBytes(OPCODE)[0];
-        byteArray[1]= shortToBytes(OPCODE)[1];
-        byteArray[2]=shortToBytes(messageOPcode)[0];
-        byteArray[3]=shortToBytes(messageOPcode)[1];
-        int k=4;
-        for(int i=0;i<optional.length;i++)
-        {
-            for(int j=0;j<optional[0].length;j++)
-            {
-                byteArray[k++]=optional[i][j];
+        if(optional!=null) {
+            byte[] byteArray = new byte[4 + optional.length * optional[0].length];
 
+            byteArray[0] = shortToBytes(OPCODE)[0];
+            byteArray[1] = shortToBytes(OPCODE)[1];
+            byteArray[2] = shortToBytes(messageOPcode)[0];
+            byteArray[3] = shortToBytes(messageOPcode)[1];
+            int k = 4;
+            for (int i = 0; i < optional.length; i++) {
+                for (int j = 0; j < optional[0].length; j++) {
+                    byteArray[k++] = optional[i][j];
+
+                }
             }
+            return byteArray;
         }
-       return byteArray;
+        else
+        {
+            byte[] byteArray = new byte[4];
+            byteArray[0] = shortToBytes(OPCODE)[0];
+            byteArray[1] = shortToBytes(OPCODE)[1];
+            byteArray[2] = shortToBytes(messageOPcode)[0];
+            byteArray[3] = shortToBytes(messageOPcode)[1];
+            return byteArray;
+        }
     }
 
-    public String toString()  {
-        return "ACK " + messageOPcode+optional.toString();
-    }
+//    public String toString()  {
+//        return "ACK " + messageOPcode+optional.toString();
+//    }
 
 
 }

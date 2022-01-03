@@ -36,14 +36,13 @@ public class PM extends Message {
         }
         else
         {
-            //TODO how iknow which words to filter
             String filteredMessage=this.content;
             for(String s: database.getForbiddenWords())
             {
                 filteredMessage.replaceAll(s,"<filtered>");
             }
             database.addMessage(filteredMessage);
-            ACK ackMessage = new ACK(OPCODE,null); //TODO Fix it
+            ACK ackMessage = new ACK(OPCODE,null);
             connections.send(connectionId , ackMessage);
             Notification notificationMessage=new Notification((byte)0,database.getUser(connectionId).getUsername(),this.content);
             int tmpUserNameID = database.getUserName_ConnectionID().get(this.username);

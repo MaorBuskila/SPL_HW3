@@ -33,10 +33,10 @@ public class DB {
 
     public boolean follow(int userId, String followUserName) {
 //        check if the user exist
-        if (userName_ConnectionID.contains(String.valueOf(followUserName))) { //TODO:value of is necssery with the real client?
+        if (userName_ConnectionID.contains(followUserName)) {
             int toFollowID = userName_ConnectionID.get(followUserName);
             //check that he is logged in && not already follow him
-            if (registerUsers.get(userId).isLoggedIn() && !registerUsers.get(userId).getFollowing().contains(toFollowID)) {
+            if (registerUsers.containsKey(userId) && registerUsers.get(userId).isLoggedIn() && !registerUsers.get(userId).getFollowing().contains(toFollowID)) {
                 registerUsers.get(userId).addFollowing(userId, registerUsers.get(toFollowID)); //add following
                 registerUsers.get(toFollowID).addFollower(userId, registerUsers.get(userId)); //add follower
                 return true;
@@ -50,7 +50,7 @@ public class DB {
         if (userName_ConnectionID.contains(followUserName)) {
             int followID = userName_ConnectionID.get(followUserName);
             //check that he is logged in && already follow him
-            if (registerUsers.get(userId).isLoggedIn() && !registerUsers.get(userId).getFollowing().contains(followID)) {
+            if (registerUsers.containsKey(userId)  && registerUsers.get(userId).isLoggedIn() && !registerUsers.get(userId).getFollowing().contains(followID)) {
                 registerUsers.get(userId).removeFollowing(followID, registerUsers.get(followID)); //remove following
                 registerUsers.get(followID).removeFollower(userId, registerUsers.get(userId)); //remove follower
                 return true;
