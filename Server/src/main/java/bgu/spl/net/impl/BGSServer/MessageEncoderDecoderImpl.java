@@ -17,10 +17,10 @@ public class MessageEncoderDecoderImpl implements MessageEncoderDecoder<Message>
     private byte[] opBytes = new byte[2];
     @Override
     public Message decodeNextByte(byte nextByte) {
-        if(nextByte=='\0') {
-            System.out.println("adirelad");
-            pushByte(nextByte);
-        }
+        System.out.print(nextByte);
+//        if(nextByte=='\0') {
+//            System.out.println("adirelad");
+//        }
         if (nextByte == ';') {
             return popMessage();
         }
@@ -28,8 +28,7 @@ public class MessageEncoderDecoderImpl implements MessageEncoderDecoder<Message>
              opcode = bytesToShort(opBytes);
  //           opcodeint = changethissssss(opBytes);
         }
-        if (nextByte == '\0')
-            System.out.println("imhehre");
+
         pushByte(nextByte);
         return null; //not a line yet
     }
