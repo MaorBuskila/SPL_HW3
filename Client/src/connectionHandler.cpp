@@ -118,8 +118,8 @@ void ConnectionHandler::shortToBytes(short num, char* bytesArr)
  
 bool ConnectionHandler::sendFrameAscii(const std::string& frame, char delimiter) {
 
-    int diffrence=frame.find(" ")-1;
-    char byteArray[frame.length()-diffrence];
+   // int diffrence=frame.find(" ")-1;
+    char byteArray[frame.length()];
     char *byteArrayPointer=&byteArray[0];
     string line=frame.substr(0,line.find(delimiter,0)-1);
     vector<string> args=split(line);
@@ -223,7 +223,7 @@ bool ConnectionHandler::sendFrameAscii(const std::string& frame, char delimiter)
     if(type=="BLOCK")
     {}
 
-	bool result=sendBytes(frame.c_str(),frame.length());
+	bool result=sendBytes(byteArray,frame.length());
 	if(!result) return false;
 	return sendBytes(&delimiter,1);
 }
