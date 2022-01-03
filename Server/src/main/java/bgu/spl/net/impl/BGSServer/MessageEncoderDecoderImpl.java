@@ -25,6 +25,8 @@ public class MessageEncoderDecoderImpl implements MessageEncoderDecoder<Message>
 //             opcode = bytesToShort(opBytes);
             opcodeint = changethissssss(opBytes);
         }
+        if (nextByte == '\0')
+            System.out.println("imhehre");
         pushByte(nextByte);
         return null; //not a line yet
     }
@@ -59,7 +61,7 @@ public class MessageEncoderDecoderImpl implements MessageEncoderDecoder<Message>
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        String[] arguments = result.split("0");//TODO:change to  "\0" !!!!!!!!!!!!!!!!!!!!!!!!!! this is just check for echo
+        String[] arguments = result.split("\0");//TODO:change to  "\0" !!!!!!!!!!!!!!!!!!!!!!!!!! this is just check for echo
 //        String[] arguments = result.split('\0');
         len = 0;
         //switch (opcode){ todo:ORGINAL!!
