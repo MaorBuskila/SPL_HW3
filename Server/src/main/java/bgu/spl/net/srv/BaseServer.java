@@ -19,13 +19,13 @@ public abstract class BaseServer<T> implements Server<T> {
 
 
     //Added:
-    private final ConnectionsImpl<T> connection = new ConnectionsImpl<T>();
+    private final ConnectionsImpl<T> connection ;
 
     public BaseServer(
             int port,
             Supplier<BidiMessagingProtocol<T>> protocolFactory,
             Supplier<MessageEncoderDecoder<T>> encdecFactory) {
-
+        this.connection=new ConnectionsImpl<>();
         this.port = port;
         this.protocolFactory = protocolFactory;
         this.encdecFactory = encdecFactory;

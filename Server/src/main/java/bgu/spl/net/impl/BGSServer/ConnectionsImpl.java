@@ -9,7 +9,11 @@ public class ConnectionsImpl<T>  implements Connections<T> {
 
 
 //    private AtomicInteger idCounter = new AtomicInteger(0);
-    private ConcurrentHashMap<Integer , ConnectionHandler<T>> activeClient = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<Integer , ConnectionHandler<T>> activeClient;
+    public ConnectionsImpl()
+    {
+        activeClient = new ConcurrentHashMap<>();
+    }
     @Override
     public boolean send(int connectionId, T msg) {
         if (activeClient.get(connectionId) == null)
@@ -52,11 +56,11 @@ public class ConnectionsImpl<T>  implements Connections<T> {
     }
 
     ///////// Connecction get instance for Non\Blocking connection handler/////////
-//    private ConnectionsImpl<T> connections = null;
-//    public  ConnectionsImpl<T> getInstance() {
-//        if (connections == null) {
-//            connections = new ConnectionsImpl<T>();
-//        }
-//        return connections;
-//    }
+    private ConnectionsImpl<T> connections = null;
+    public  ConnectionsImpl<T> getInstance() {
+        if (connections == null) {
+            connections = new ConnectionsImpl<T>();
+        }
+        return connections;
+    }
 }

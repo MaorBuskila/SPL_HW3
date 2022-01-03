@@ -1,12 +1,14 @@
 package bgu.spl.net.impl.BGSServer.Messages;
 
+import bgu.spl.net.api.bidi.Connections;
+import bgu.spl.net.impl.BGSServer.DB;
 import bgu.spl.net.impl.BGSServer.MessageEncoderDecoderImpl;
 
 import java.nio.charset.StandardCharsets;
 
 import static bgu.spl.net.impl.BGSServer.MessageEncoderDecoderImpl.shortToBytes;
 
-public class ACK{
+public class ACK extends Message{
     private final short OPCODE = 10;
     private short messageOPcode;
     private short logStateOPCODE = 7;
@@ -19,6 +21,12 @@ public class ACK{
 
 
     }
+
+    @Override
+    public void process(int connectionId, Connections connections, DB database) {
+
+    }
+
     public byte[] encode()
     {
         byte[] byteArray=new byte[4+optional.length*optional[0].length];

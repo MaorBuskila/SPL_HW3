@@ -22,7 +22,6 @@ public class BlockingConnectionHandler<T> implements Runnable, ConnectionHandler
     private volatile boolean connected = true;
 
 //Added:
-    private ConnectionsImpl<T> connections;
     private int connectionId;
 
     public BlockingConnectionHandler(Socket sock, MessageEncoderDecoder<T> reader, BidiMessagingProtocol<T> protocol, int connectionId,ConnectionsImpl<T> connection) {
@@ -71,9 +70,9 @@ public class BlockingConnectionHandler<T> implements Runnable, ConnectionHandler
         sock.close();
     }
 
-    public ConnectionsImpl<T> getConnections() {
-        return connections;
-    }
+//    public ConnectionsImpl<T> getConnections() {
+//        return connections;
+//    }
 
     @Override
     public void send(T msg) {
