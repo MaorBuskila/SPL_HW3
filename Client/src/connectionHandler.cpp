@@ -118,10 +118,11 @@ void ConnectionHandler::shortToBytes(short num, char* bytesArr)
  
 bool ConnectionHandler::sendFrameAscii(const std::string& frame, char delimiter) {
 
-   // int diffrence=frame.find(" ")-1;
-    char byteArray[frame.length()];
+    int wantedLength=frame.length()-(frame.find(" ")-2);
+    char byteArray[wantedLength];
     char *byteArrayPointer=&byteArray[0];
-    string line=frame.substr(0,line.find(delimiter,0)-1);
+
+    string line=frame.substr(0,frame.find(delimiter,0)-1);
     vector<string> args=split(line);
     string type=args[0];
     enum command{
