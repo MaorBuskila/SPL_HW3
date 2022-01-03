@@ -13,27 +13,23 @@ int main (int argc, char *argv[]) {
     std::string host = argv[1];
     short port = atoi(argv[2]);
     
-    ConnectionHandler connectionHandler(host, port);
-    if (!connectionHandler.connect()) {
+    ConnectionHandler *connectionHandler = new ConnectionHandler(host, port);
+    if (!connectionHandler->connect()) {
         std::cerr << "Cannot connect to " << host << ":" << port << std::endl;
         return 1;
     }
 	
 	//From here we will see the rest of the ehco client implementation:
     //create 2 Threads for writing and reading
-
-//    thread thread_writing = new thread(connec)
-
-
-
-
-
-
-
-
-
-
-
+    auto read = []() {
+        // Do read
+    };
+    std::thread reading_thread(read);
+    auto write = []() {
+        // Do write
+    };
+    std::thread writing_thread(write);
+//    thread thread_writing = new thread()
 
     while (1) {
         const short bufsize = 1024;
