@@ -23,15 +23,17 @@ public class Post extends Message {
             connections.send(connectionId, errorMessage);
         }
         else {
+            //ACK Notification
             user.post();
            for(User tmpuser : user.getFollowers().values()){
                tmpuser.addMessage(content);
            }
             extractUsers(content);
            for (String additionalUser : additionalUsers){
-             User additionalTmpUser = database.getRegisterUsers().get(database.getConnectionID_userName().get(additionalUser));
+             User additionalTmpUser = database.getRegisterUsers().get(database.getUserName_ConnectionID().get(additionalUser));
                if(!user.getFollowers().contains(additionalTmpUser)){
                    additionalTmpUser.addMessage(content);
+                   //TODO notification
                }
 
            }

@@ -25,7 +25,7 @@ public class Stats extends Message{
             connections.send(connectionId, errorMessage);
         } else {
             for (String tmpUserName : listOfUserNames) {
-                int tmpUserNameID = database.getConnectionID_userName().get(tmpUserName);
+                int tmpUserNameID = database.getUserName_ConnectionID().get(tmpUserName);
                 User listUser = database.getRegisterUsers().get(tmpUserNameID);
                 if (listUser!=null) {
                     bytes[0] = shortToBytes(listUser.getAge());

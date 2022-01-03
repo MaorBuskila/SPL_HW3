@@ -2,9 +2,6 @@ package bgu.spl.net.impl.BGSServer.Messages;
 
 import bgu.spl.net.api.bidi.Connections;
 import bgu.spl.net.impl.BGSServer.DB;
-import bgu.spl.net.impl.BGSServer.User;
-
-import java.text.ParseException;
 
 public class PM extends Message {
     private  final short OPCODE = 6;
@@ -30,7 +27,7 @@ public class PM extends Message {
 //            connections.send(connectionId , errorMessage);
 //        }
         if(!database.getRegisterUsers().containsKey(connectionId) || !database.getUser(connectionId).isLoggedIn() ||
-        !database.getRegisterUsers().containsKey(database.getConnectionID_userName().get(this.username)) || !database.getUser(connectionId).getFollowing().containsKey(database.getConnectionID_userName().get(this.username)))
+        !database.getRegisterUsers().containsKey(database.getUserName_ConnectionID().get(this.username)) || !database.getUser(connectionId).getFollowing().containsKey(database.getUserName_ConnectionID().get(this.username)))
         {
 
             Error errorMessage = new Error(OPCODE);
@@ -48,8 +45,11 @@ public class PM extends Message {
             database.addMessage(filteredMessage);
             ACK ackMessage = new ACK(OPCODE,null); //TODO Fix it
             connections.send(connectionId , ackMessage);
+            Notification notificationMessage=new Notification((byte)0,database.getUser(connectionId).getUsername(),this.content);
+            int tmpUserNameID = database.getUserName_ConnectionID().get(this.username);
+            connections.send(tmpUserNameID,notificationMessage);
             //TODO notification
-            // Notification notificationMessage=new Notification()
+
         }
 
     }

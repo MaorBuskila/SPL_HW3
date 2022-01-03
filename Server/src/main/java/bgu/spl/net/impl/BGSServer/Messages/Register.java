@@ -28,7 +28,7 @@ public class Register extends Message{
 
     @Override
     public void process(int connectionId, Connections connections, DB database) {
-        if (!database.getRegisterUsers().contains(connectionId) || database.getConnectionID_userName().contains(this.username)) {
+        if (!database.getRegisterUsers().contains(connectionId) || database.getUserName_ConnectionID().contains(this.username)) {
             User user = new User(username, password, birthday);
             database.registerClient(connectionId, user);
             ACK ackMessage = new ACK(OPCODE, null);
