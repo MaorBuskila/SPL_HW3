@@ -7,9 +7,14 @@ import bgu.spl.net.impl.BGSServer.Messages.Message;
 public class BidiMessagingProtocolImpl<T> implements BidiMessagingProtocol<T> {
 
     private boolean shouldTerminate = false;
-    private static DB database = DB.getInstance();
+    private DB database;
     private Connections<T> connections;
     private int connectionId;
+
+    public BidiMessagingProtocolImpl(DB data) {
+        this.database = data;
+    }
+
     @Override
 
     /// what the fuck is this shit???

@@ -8,13 +8,12 @@ import bgu.spl.net.srv.Server;
 
 public class ReactorMain {
     public static void main(String[] args) {
-//        NewsFeed feed = new NewsFeed(); //one shared object
-        String data = new String();
+        DB data = DB.getInstance(); //one shared object
         Server.reactor(
-                Runtime.getRuntime().availableProcessors(),
-                7777, //port
-                () -> new RemoteCommandInvocationProtocol<>(data), //protocol factory
-                ObjectEncoderDecoder::new //message encoder decoder factory
+                Integer.parseInt(args[0]), // port
+                Integer.parseInt(args[1]), // Num of threads
+                () -> new BidiMessagingProtocolImpl(data), //protocol factory
+                () ->new MessageEncoderDecoderImpl() //message encoder decoder factory
         ).serve();
     }
 }

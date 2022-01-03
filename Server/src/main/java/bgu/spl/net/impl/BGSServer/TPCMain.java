@@ -4,9 +4,10 @@ import bgu.spl.net.srv.Server;
 
 public class TPCMain {
     public static void main(String[] args) {
+        DB data = DB.getInstance();
                 Server.threadPerClient(
-                7777, //port
-                () -> new BidiMessagingProtocolImpl(), //protocol factory
+                Integer.parseInt(args[0]), //port
+                () -> new BidiMessagingProtocolImpl(data), //protocol factory
                 () ->new MessageEncoderDecoderImpl() //message encoder decoder factory
         ).serve();
     }
