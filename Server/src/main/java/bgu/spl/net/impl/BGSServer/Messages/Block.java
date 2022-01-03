@@ -22,7 +22,7 @@ public class Block extends Message{
         else
         {
 
-          //  .    unfollow each other
+          //      unfollow each other
         int tmpConnectionID=database.getUserName_ConnectionID().get(this.username);
          database.getUser(tmpConnectionID).addBlockMe(database.getUser(connectionId));//got Connection id
          database.unfollow(connectionId,this.username);
