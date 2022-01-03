@@ -5,6 +5,7 @@ import bgu.spl.net.impl.BGSServer.DB;
 import bgu.spl.net.impl.BGSServer.User;
 
 public class Block extends Message{
+    private final short OPCODE = 12;
     private String username;
     public Block(String username) {
         this.username=username;
@@ -14,8 +15,19 @@ public class Block extends Message{
     @Override
     public void process(int connectionId, Connections connections, DB database) {
         User user =  database.getRegisterUsers().get(connectionId);
-        if(user==null || !database.getUserName_ConnectionID().containsKey(this.username))
-            return Error
+        if(user==null || !database.getUserName_ConnectionID().containsKey(this.username)) {
+            Error errorMessage=new Error(OPCODE);
+            connections.send(connectionId , errorMessage);
+        }
+        else
+        {
+
+          //      unfollow each other
+        int tmpConnectionID=database.getUserName_ConnectionID().get(this.username);
+         database.getUser(tmpConnectionID).addBlockMe(database.getUser(connectionId));//got Connection id
+         database.unfollow(connectionId,this.username);
+         database.unfollow(tmpConnectionID,database.getUser(connectionId).getUsername());
+        }
 
     }
 
