@@ -28,6 +28,8 @@ public class MessageEncoderDecoderImpl implements MessageEncoderDecoder<Message>
              opcode = bytesToShort(opBytes);
  //           opcodeint = changethissssss(opBytes);
         }
+        if (nextByte == '\0')
+            System.out.println("imhehre");
         pushByte(nextByte);
         return null; //not a line yet
     }

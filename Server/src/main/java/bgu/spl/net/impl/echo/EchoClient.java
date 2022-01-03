@@ -13,9 +13,7 @@ public class EchoClient {
 
         if (args.length == 0) {
 //            args = new String[]{"127.0.0.1", "040maor;"};
-
-        //  args = new String[]{"127.0.0.1",bytes};
-          args=new String[]{args[0],args[1]};
+            args = new String[]{"127.0.0.1", "01maor\0abc\017-11-98;"};
         }
 
         if (args.length < 2) {
