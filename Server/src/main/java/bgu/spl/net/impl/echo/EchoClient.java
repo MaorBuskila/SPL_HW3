@@ -9,14 +9,13 @@ import java.net.Socket;
 
 public class EchoClient {
 
-    public static void main(byte[][] args) throws IOException {
+    public static void main(String[] args) throws IOException {
 
         if (args.length == 0) {
 //            args = new String[]{"127.0.0.1", "040maor;"};
-            byte[] bytes={1,'m','a','o','r',0,'a','b','c',0,10,'-',10,'-', 19,98,';'};
-            byte[] bytes2={127,'.',0,'.',0,'.',1};
+
         //  args = new String[]{"127.0.0.1",bytes};
-          args=new byte[][]{bytes2,bytes};
+          args=new String[]{args[0],args[1]};
         }
 
         if (args.length < 2) {

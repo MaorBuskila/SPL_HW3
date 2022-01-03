@@ -17,13 +17,16 @@ public class MessageEncoderDecoderImpl implements MessageEncoderDecoder<Message>
     private byte[] opBytes = new byte[2];
     @Override
     public Message decodeNextByte(byte nextByte) {
-
+        if(nextByte=='\0') {
+            System.out.println("adirelad");
+            pushByte(nextByte);
+        }
         if (nextByte == ';') {
             return popMessage();
         }
         if (len == 2) {
-//             opcode = bytesToShort(opBytes);
-            opcodeint = changethissssss(opBytes);
+             opcode = bytesToShort(opBytes);
+ //           opcodeint = changethissssss(opBytes);
         }
         pushByte(nextByte);
         return null; //not a line yet
@@ -59,11 +62,12 @@ public class MessageEncoderDecoderImpl implements MessageEncoderDecoder<Message>
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        String[] arguments = result.split("0");//TODO:change to  "\0" !!!!!!!!!!!!!!!!!!!!!!!!!! this is just check for echo
+        String[] arguments = result.split("\0");//TODO:change to  "\0" !!!!!!!!!!!!!!!!!!!!!!!!!! this is just check for echo
 //        String[] arguments = result.split('\0');
         len = 0;
-        //switch (opcode){ todo:ORGINAL!!
-        switch (opcodeint){
+        switch (opcode){
+//        switch (opcodeint){
+
                 case 1: //register
                     return new Register(arguments[0], arguments[1] ,arguments[2]);
                case 2:
