@@ -344,15 +344,34 @@ bool ConnectionHandler::sendFrameAscii(const std::string& frame, char delimiter)
     }
     if(type=="PM")
     {
+        short OPCODE=6;
+        shortToBytes(OPCODE,opByteArray);
+        charVec.push_back(*opByteArray);
+        charVec.push_back(*(opByteArray+1));
     }
     if(type=="STATS")
-    {}
+    {
+        short OPCODE=7;
+        shortToBytes(OPCODE,opByteArray);
+        charVec.push_back(*opByteArray);
+        charVec.push_back(*(opByteArray+1));
+    }
     if(type=="LOGSTAT")
-    {}
+    {
+        short OPCODE=8;
+        shortToBytes(OPCODE,opByteArray);
+        charVec.push_back(*opByteArray);
+        charVec.push_back(*(opByteArray+1));
+    }
 
 
     if(type=="BLOCK")
-    {}
+    {
+        short OPCODE=9;
+        shortToBytes(OPCODE,opByteArray);
+        charVec.push_back(*opByteArray);
+        charVec.push_back(*(opByteArray+1));
+    }
 
     int len = 0;
     char byteArray[wantedLength];
