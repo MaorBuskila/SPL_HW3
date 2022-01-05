@@ -97,6 +97,8 @@ bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
         do {
             if (opcode == -1) {
                 getBytes(&ch, 1);
+                cout<< ch << endl;
+
                 opcodeBytes.push_back(ch);
                 opcodeCounter++;
                 if (opcodeCounter == 2) {
