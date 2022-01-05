@@ -35,4 +35,9 @@ public class Block extends Message{
     public byte[] encode() {
         return new byte[0];
     }
+
+    @Override
+    public String toString() {
+        return null;
+    }
 }

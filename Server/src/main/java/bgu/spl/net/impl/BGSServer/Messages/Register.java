@@ -46,5 +46,10 @@ public class Register extends Message{
         return new byte[0];
     }
 
+    @Override
+    public String toString() {
+        return null;
+    }
+
 
 }

@@ -76,115 +76,256 @@ bool ConnectionHandler::sendLine(std::string &line) {
     return sendFrameAscii(line, ';');
 }
 
-bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
-
-
+//bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
+//
+//
+//    char ch;
+//    short opcode = -1;
+//    int opcodeCounter = 0;
+//    int msgOpcodeCounter = 0;
+//    short msgOpcode = -1;
+//    char *Name;
+//    char *opcodeFrom;
+//    int counterForSpace = 0;
+//    bool checkStart = false;
+//    vector<char> opcodeBytes;
+//    vector<char> msgOpcodeBytes;
+//    int ackCounter = 2;
+//    string msg = "";
+//
+//    try {
+//        do {
+//            if (opcode == -1) {
+//                getBytes(&ch, 1);
+//                cout<< "ch is : "<< ch << endl;
+//                opcodeBytes.push_back(ch);
+//                opcodeCounter++;
+//                if (opcodeCounter == 2) {
+//                    opcode = opcodeFinder(opcodeBytes);
+//                }
+//            } else {
+//                if (opcode == 9) //notification
+//                {
+//                    if (!checkStart) {
+//                        msg += "NOTIFICATION ";
+//                        getBytes(&ch, 1);
+//                        int pmOrPublic = ch - '0';
+//                        if (pmOrPublic == 0) {
+//                            msg += "PM ";
+//                        } else {
+//                            msg += "Public ";
+//                        }
+//                        checkStart = true;
+//                    } else {
+//                        getBytes(&ch, 1);
+//                        if (ch != '\0') {
+//                            Name = Name + ch;
+//                        } else {
+//                            msg = msg + Name + " ";
+//                        }
+//                    }
+//                }
+//                //1001; -REGISTER
+//                //1002; LOGIN
+//
+//                if (opcode == 10){//ACK
+//                    getBytes(&ch, 1);
+//                    if (ackCounter == 0) {
+//                        if (msgOpcode == -1) {
+//                            msgOpcodeBytes.push_back(ch);
+//                            msgOpcodeCounter++;
+//                            if (msgOpcodeCounter == 2) {
+//                                msgOpcode = opcodeFinder(msgOpcodeBytes);
+//                                msg = "ACK "  + to_string(msgOpcode);
+//                            }
+//                        }
+//                        else {
+//                            if (msgOpcode == 3){ //LOGOUT
+//                                cout  << "CLOSING" << endl;
+//                                this->close();
+//                            }
+//                            if (msgOpcode == 4){ //FOLLOW
+//                                //getBytes(&ch, 1);
+//                                if (ch == '\0')
+//                                    msg += &" " [ch];
+//                            }
+//                            if (msgOpcode == 7 || msgOpcode == 8){ //LOGSTAT
+//                                counterForSpace++;
+//                                getBytes(&ch, 1);
+//                                Name = Name + ch;
+//                                if (counterForSpace == 2) {
+//                                    msg += " ";
+//                                    counterForSpace = 0;
+//                                }
+//                            }
+//                        }
+//                    } else {
+//                        if (ackCounter == 4) msg = msg + "ACK ";
+//                        ackCounter--;
+//                    }
+//                }
+//                if (opcode == 11)//ERROR
+//                {
+//                    if (msgOpcode == -1) {
+//                        getBytes(&ch, 1);
+//                        msgOpcodeBytes.push_back(ch);
+//                        msgOpcodeCounter++;
+//                        if (msgOpcodeCounter == 2) {
+//                            msgOpcode = opcodeFinder(msgOpcodeBytes);
+//                            msg = msg + "ERROR " + to_string(msgOpcode);
+//                            frame = msg;
+//                            return true;
+//                        }
+//                    }
+//                }
+//            }
+//            //getBytes(&ch, 1);
+//            //frame.append(1, ch);
+//        } while (delimiter != ch);
+//
+//    } catch (std::exception &e) {
+//        std::cerr << "recv failed (Error: " << e.what() << ')' << std::endl;
+//        return false;
+//    }
+//    frame = msg;
+//    return true;
+//}
+bool ConnectionHandler::getFrameAscii(std::string& frame, char delimiter) {
     char ch;
     short opcode = -1;
     int opcodeCounter = 0;
     int msgOpcodeCounter = 0;
     short msgOpcode = -1;
-    char *Name;
-    char *opcodeFrom;
-    int counterForSpace = 0;
+    char* Name;
+    char* opcodeFrom;
+    int counterForSpace=0;
     bool checkStart = false;
     vector<char> opcodeBytes;
     vector<char> msgOpcodeBytes;
-    int ackCounter = 2;
-    string msg = "";
-
+    int ackCounter=2;
+    string msg="";
+    int PMPO=-1;
     try {
-        do {
-            if (opcode == -1) {
+        do{
+            if(opcode == -1) {
                 getBytes(&ch, 1);
-                cout<< ch << endl;
-
+                //opcodeFrom =opcodeFrom+ch;
                 opcodeBytes.push_back(ch);
                 opcodeCounter++;
-                if (opcodeCounter == 2) {
+                if(opcodeCounter == 2){
+                    //opcode = bytesToShort(opcodeBytes);
                     opcode = opcodeFinder(opcodeBytes);
                 }
-            } else {
+            }
+            else {
                 if (opcode == 9) //notification
                 {
+
                     if (!checkStart) {
-                        msg += "NOTIFICATION ";
+                        frame = frame+ "NOTIFICATION ";
                         getBytes(&ch, 1);
                         int pmOrPublic = ch - '0';
                         if (pmOrPublic == 0) {
-                            msg += "PM ";
+                            frame = frame+ "PM ";
+                            PMPO = 1;
                         } else {
-                            msg += "Public ";
+                            frame = frame+ "PUBLIC ";
+                            PMPO=0;
                         }
                         checkStart = true;
                     } else {
-                        getBytes(&ch, 1);
-                        if (ch != '\0') {
-                            Name = Name + ch;
-                        } else {
-                            msg = msg + Name + " ";
+                        if (PMPO==0) {
+                            while (ch != 'P') {
+                                getBytes(&ch, 1);
+                            }
+                            getBytes(&ch, 1);
+                            getBytes(&ch, 1);
+                            getBytes(&ch, 1);
+                            getBytes(&ch, 1);
+                            while (ch != ';') {
+                                frame = frame + ch;
+                                getBytes(&ch, 1);
+                            }
                         }
+                        else
+                        {
+                            getBytes(&ch, 1);
+                            getBytes(&ch, 1);
+                            while (ch != ';') {
+                                frame = frame + ch;
+                                getBytes(&ch, 1);
+                            }
+                        }
+                        PMPO=-1;
+                        return true;
                     }
                 }
-                //1001; -REGISTER
-                //1002; LOGIN
-
-                if (opcode == 10){//ACK
+                if (opcode == 10)//ACK
+                {
                     getBytes(&ch, 1);
-//                    if (ackCounter == 0) {
+                    if (ackCounter == 0) {
                         if (msgOpcode == -1) {
                             msgOpcodeBytes.push_back(ch);
                             msgOpcodeCounter++;
                             if (msgOpcodeCounter == 2) {
                                 msgOpcode = opcodeFinder(msgOpcodeBytes);
-                                msg = "ACK "  + to_string(msgOpcode);
+                                msg = msg + to_string(msgOpcode);
                             }
-                        }
-                        else {
-                            if (msgOpcode == 3){ //LOGOUT
-                                cout  << "CLOSING" << endl;
-                                this->close();
-                            }
-                            if (msgOpcode == 4){ //FOLLOW
+                        } else {
+                            if (msgOpcode == 4) //FOLLOW
+                            {
                                 //getBytes(&ch, 1);
-                                if (ch == '\0')
-                                    msg += &" " [ch];
+                                if (ch=='\0')
+                                    msg = msg + " ";
+                                msg = msg + ch;
                             }
-                            if (msgOpcode == 7 || msgOpcode == 8){ //LOGSTAT
-                                counterForSpace++;
-                                getBytes(&ch, 1);
-                                Name = Name + ch;
-                                if (counterForSpace == 2) {
-                                    msg += " ";
-                                    counterForSpace = 0;
+                            if (msgOpcode == 7 || msgOpcode == 8) //LOGSTAT
+                            {
+                                while (ch != ';') {
+                                    frame += bytesToShort(&ch);
+                                    getBytes(&ch, 1);
                                 }
+                                frame = msg + frame.substr(0,frame.length()-2);
+                                return true;
                             }
                         }
-//                    } else {
-//                        if (ackCounter == 2) msg = msg + "ACK ";
-//                        ackCounter--;
-//                    }
+                    } else {
+                        if (ackCounter == 2) msg = msg + "ACK ";
+                        ackCounter--;
+                    }
                 }
                 if (opcode == 11)//ERROR
                 {
                     if (msgOpcode == -1) {
                         getBytes(&ch, 1);
-                        msgOpcodeBytes.push_back(ch);
-                        msgOpcodeCounter++;
-                        if (msgOpcodeCounter == 2) {
-                            msgOpcode = opcodeFinder(msgOpcodeBytes);
-                            msg = msg + "ERROR " + to_string(msgOpcode);
-                            frame = msg;
+                        if (ch=='@')
+                        {
+                            frame = frame + "Error ";
+                            while (ch != ';') {
+                                frame = frame + ch;
+                                getBytes(&ch, 1);
+                            }
                             return true;
+                        }
+                        else
+                        {
+                            msgOpcodeBytes.push_back(ch);
+                            msgOpcodeCounter++;
+                            if (msgOpcodeCounter == 2) {
+                                msgOpcode = opcodeFinder(msgOpcodeBytes);
+                                msg = msg + "ERROR "+ to_string(msgOpcode);
+                                frame = msg;
+                                return true;
+                            }
                         }
                     }
                 }
             }
             //getBytes(&ch, 1);
             //frame.append(1, ch);
-        } while (delimiter != ch);
+        }while (delimiter != ch);
 
-    } catch (std::exception &e) {
+    } catch (std::exception& e) {
         std::cerr << "recv failed (Error: " << e.what() << ')' << std::endl;
         return false;
     }
@@ -334,7 +475,7 @@ bool ConnectionHandler::sendFrameAscii(const std::string &frame, char delimiter)
 
     if(type=="LOGSTAT")
     {
-        short OPCODE=7;
+        short OPCODE = 7;
         shortToBytes(OPCODE,opByteArray);
         charVec.push_back(*opByteArray);
         charVec.push_back(*(opByteArray+1));

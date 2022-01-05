@@ -20,8 +20,7 @@ public class ConnectionsImpl<T>  implements Connections<T> {
             return false;
 
         activeClient.get(connectionId).send(msg);
-        System.out.println("");
-        System.out.println("Sending " + msg.getClass() + " client number: " + connectionId);
+        System.out.println(" Sending " + msg.getClass() + " client number: " + connectionId);
         return true;
     }
 

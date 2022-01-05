@@ -44,13 +44,13 @@ public class MessageEncoderDecoderImpl implements MessageEncoderDecoder<Message>
     }
 
     @Override
-//    public byte[] encode(Message message) {
-//        String result = message.toString();
-//        return result.getBytes();
-//    }
     public byte[] encode(Message message) {
-        return message.encode();
+        String result = message.toString();
+        return result.getBytes();
     }
+//    public byte[] encode(Message message) {
+//        return message.encode();
+//    }
 
     private Message popMessage() {
         String result = null;

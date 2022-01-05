@@ -32,8 +32,8 @@ public class Stats extends Message{
                     bytes[1] = shortToBytes(listUser.getNumberOfPost());
                     bytes[2] = shortToBytes(listUser.getNumberOfFollowers());
                     bytes[3] = shortToBytes(listUser.getNumberOfFollowing());
-                    ACK ackMessage = new ACK(OPCODE, bytes);
-                    connections.send(connectionId, ackMessage);
+//                    ACK ackMessage = new ACK(OPCODE, bytes);
+//                    connections.send(connectionId, ackMessage);
                 }
                 else {
                     Error errorMessage = new Error(OPCODE);
@@ -48,5 +48,10 @@ public class Stats extends Message{
     @Override
     public byte[] encode() {
         return new byte[0];
+    }
+
+    @Override
+    public String toString() {
+        return null;
     }
 }

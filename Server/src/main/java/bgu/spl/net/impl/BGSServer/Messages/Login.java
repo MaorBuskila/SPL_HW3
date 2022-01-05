@@ -4,6 +4,9 @@ import bgu.spl.net.api.bidi.Connections;
 import bgu.spl.net.impl.BGSServer.DB;
 import bgu.spl.net.impl.BGSServer.User;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+
 public class Login extends Message {
 
     private final Short OPCODE = 2;
@@ -24,10 +27,6 @@ public class Login extends Message {
             //check if password are right if not Error
             //check if he is already logged in
             if (user == null || !user.getPassword().equals(password) || captcha.equals("0") || user.isLoggedIn()) {
-                System.out.println(user +" = null");
-                System.out.println(user.getPassword() +" = " + password );
-                System.out.println(captcha + " = 0");
-                System.out.println(user.isLoggedIn() + " = true ");
                 Error errorMessage = new Error(OPCODE);
                 connections.send(connectionId , errorMessage);
             }
@@ -39,8 +38,20 @@ public class Login extends Message {
         //TODO notification
     }
 
+//    public String toString()  {
+//
+//            System.out.println(Arrays.toString((""+OPCODE + '0' + messageOPcode + ';').getBytes(StandardCharsets.UTF_8)));
+//            return ""+OPCODE + '0' + messageOPcode+ ';';
+//
+//        }
+
     @Override
     public byte[] encode() {
         return new byte[0];
+    }
+
+    @Override
+    public String toString() {
+        return null;
     }
 }

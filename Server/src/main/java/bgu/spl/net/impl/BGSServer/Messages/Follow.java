@@ -3,6 +3,9 @@ package bgu.spl.net.impl.BGSServer.Messages;
 import bgu.spl.net.api.bidi.Connections;
 import bgu.spl.net.impl.BGSServer.DB;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Vector;
+
 public class Follow extends Message {
     private String followOrUn;
     private String username;
@@ -25,7 +28,10 @@ public class Follow extends Message {
 
         }
         if (command) {
-            ACK ackMessage = new ACK(OPCODE, null);
+            Vector<byte[]> vector = new Vector<>();
+            vector.add((this.username+'\0').getBytes(StandardCharsets.UTF_8));
+
+            ACK ackMessage = new ACK(OPCODE,vector);
             connections.send(connectionId, ackMessage);
         } else {
             Error errorMessage = new Error(OPCODE);
@@ -36,6 +42,11 @@ public class Follow extends Message {
     @Override
     public byte[] encode() {
         return new byte[0];
+    }
+
+    @Override
+    public String toString() {
+        return null;
     }
 }
     

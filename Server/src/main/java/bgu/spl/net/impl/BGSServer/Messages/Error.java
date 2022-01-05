@@ -17,7 +17,7 @@ public class Error extends Message{
     }
 
     public String toString()  {
-        return "ERROR " + messageOPcode;
+        return ""+OPCODE + '0' + messageOPcode;
     }
 
 

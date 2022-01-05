@@ -9,4 +9,5 @@ public abstract class Message {
 
 
     public abstract byte[] encode();
+    public abstract String toString();
 }
