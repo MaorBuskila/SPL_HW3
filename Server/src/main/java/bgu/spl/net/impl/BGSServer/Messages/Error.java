@@ -1,5 +1,7 @@
 package bgu.spl.net.impl.BGSServer.Messages;
 
+import java.nio.charset.StandardCharsets;
+
 import static bgu.spl.net.impl.BGSServer.MessageEncoderDecoderImpl.shortToBytes;
 
 public class Error {
@@ -25,7 +27,9 @@ public class Error {
         byteArray[2]=shortToBytes(messageOPcode)[0];
         byteArray[3]=shortToBytes(messageOPcode)[1];
 
-        return byteArray;
+//        return byteArray;
+        return (""+OPCODE+'\0'+messageOPcode + ';').getBytes(StandardCharsets.UTF_8);
     }
+
 }
 

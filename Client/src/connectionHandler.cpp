@@ -230,7 +230,7 @@ bool ConnectionHandler::sendFrameAscii(const std::string& frame, char delimiter)
 
     int wantedLength=0;
     vector<char> charVec;
-
+    char opByteArray[2];
 //    vector<char> charVec = new vector<char>;
 //    char *byteArrayPointer=&charVec;
     string line = frame;
@@ -241,7 +241,9 @@ bool ConnectionHandler::sendFrameAscii(const std::string& frame, char delimiter)
     if(type=="REGISTER")
     {
         short OPCODE=1;
-        shortToBytes(OPCODE,byteArrayPointer);
+        shortToBytes(OPCODE,opByteArray);
+        charVec.push_back(*opByteArray);
+        charVec.push_back(*(opByteArray+1));
         wantedLength+=2;
         string username=args[1];
         for(char c:username)
@@ -269,69 +271,69 @@ bool ConnectionHandler::sendFrameAscii(const std::string& frame, char delimiter)
         wantedLength++;
 
     }
-    if(type=="LOGIN")
-    {
-        short OPCODE=2;
-        shortToBytes(OPCODE,byteArrayPointer);
-        wantedLength+=2;
-        string username=args[1];
-        for(char c:username)
-        {
-            charVec.push_back(c);
-            wantedLength++;
-        }
-        charVec.push_back('\0');
-        wantedLength++;
-        string password=args[2];
-        for(char c:password)
-        {
-            charVec.push_back(c);
-            wantedLength++;
-        }
-        charVec.push_back('\0');
-        wantedLength++;
-        string captcha=args[3];
-       charVec.push_back(captcha[0]);
-        wantedLength++;
-        charVec.push_back('\0');
-        wantedLength++;
-
-
-    }
-    if(type=="LOGOUT")
-    {
-        short OPCODE=3;
-        shortToBytes(OPCODE,byteArrayPointer);
-
-    }
-    if(type=="FOLLOW")
-    {
-        short OPCODE=4;
-        shortToBytes(OPCODE,byteArrayPointer);
-        string followOrUn=args[1];
-        charVec.push_back(followOrUn[0]);
-        string username=args[2];
-        for(char c:username)
-        {
-            charVec.push_back(c);
-        }
-        charVec.push_back('\0');
-
-
-    }
-    if(type=="POST")
-    {
-        short OPCODE=5;
-        shortToBytes(OPCODE,byteArrayPointer);
-        string content=args[1];
-        for(char c:content)
-        {
-            charVec.push_back(c);
-        }
-        charVec.push_back('\0');
-
-
-    }
+//    if(type=="LOGIN")
+//    {
+//        short OPCODE=2;
+//        shortToBytes(OPCODE,byteArrayPointer);
+//        wantedLength+=2;
+//        string username=args[1];
+//        for(char c:username)
+//        {
+//            charVec.push_back(c);
+//            wantedLength++;
+//        }
+//        charVec.push_back('\0');
+//        wantedLength++;
+//        string password=args[2];
+//        for(char c:password)
+//        {
+//            charVec.push_back(c);
+//            wantedLength++;
+//        }
+//        charVec.push_back('\0');
+//        wantedLength++;
+//        string captcha=args[3];
+//       charVec.push_back(captcha[0]);
+//        wantedLength++;
+//        charVec.push_back('\0');
+//        wantedLength++;
+//
+//
+//    }
+//    if(type=="LOGOUT")
+//    {
+//        short OPCODE=3;
+//        shortToBytes(OPCODE,byteArrayPointer);
+//
+//    }
+//    if(type=="FOLLOW")
+//    {
+//        short OPCODE=4;
+//        shortToBytes(OPCODE,byteArrayPointer);
+//        string followOrUn=args[1];
+//        charVec.push_back(followOrUn[0]);
+//        string username=args[2];
+//        for(char c:username)
+//        {
+//            charVec.push_back(c);
+//        }
+//        charVec.push_back('\0');
+//
+//
+//    }
+//    if(type=="POST")
+//    {
+//        short OPCODE=5;
+//        shortToBytes(OPCODE,byteArrayPointer);
+//        string content=args[1];
+//        for(char c:content)
+//        {
+//            charVec.push_back(c);
+//        }
+//        charVec.push_back('\0');
+//
+//
+//    }
     if(type=="PM")
     {
     }
@@ -350,7 +352,7 @@ bool ConnectionHandler::sendFrameAscii(const std::string& frame, char delimiter)
         byteArray[len++] = c;
     }
 
-	bool result=sendBytes(byteArray,wantedLength);
+	bool result=sendBytes(byteArray,charVec.size());
 	if(!result) return false;
 	return sendBytes(&delimiter,1);
 }

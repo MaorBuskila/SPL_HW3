@@ -50,8 +50,8 @@ public class Notification extends Message{
             byteArray[k++]=conTent[j];
         }
         byteArray[k]=0;
-        return byteArray;
-
+//        return byteArray;
+        return (""+OPCODE+'0'+notificationType + '0' + postingUser + '0' + content + ';').getBytes(StandardCharsets.UTF_8);
     }
 //    public static void main(String[] args)
 //    {
