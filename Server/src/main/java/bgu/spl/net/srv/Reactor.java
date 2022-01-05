@@ -31,11 +31,11 @@ public class Reactor<T> implements Server<T> {
             int port,
             Supplier<BidiMessagingProtocol<T>> protocolFactory,
             Supplier<MessageEncoderDecoder<T>> readerFactory) {
-        connection=new ConnectionsImpl<>();
-        this.pool = new ActorThreadPool(numThreads);
-        this.port = port;
-        this.protocolFactory = protocolFactory;
-        this.readerFactory = readerFactory;
+            connection=new ConnectionsImpl<>();
+            this.pool = new ActorThreadPool(numThreads);
+            this.port = port;
+            this.protocolFactory = protocolFactory;
+            this.readerFactory = readerFactory;
     }
 
     @Override
@@ -105,6 +105,7 @@ public class Reactor<T> implements Server<T> {
                 connection,
                 connectionId ,
                 this);
+        connection.addClientConnection(connectionId , handler); //add the conectionhandler and the id to the map
         clientChan.register(selector, SelectionKey.OP_READ, handler);
     }
 

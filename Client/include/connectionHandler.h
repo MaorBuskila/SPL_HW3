@@ -50,7 +50,12 @@ public:
 	
     // Close down the connection properly.
     void close();
- 
+
+    short opcodeFinder(vector<char> &bytesVec);
+
+    short bytesToShort(char *bytesArr);
+
+    vector<string> split(string &frame, string delimiter);
 }; //class ConnectionHandler
  
 #endif

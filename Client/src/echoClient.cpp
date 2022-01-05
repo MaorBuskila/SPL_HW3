@@ -25,15 +25,15 @@ int main(int argc, char *argv[]) {
 
     std::thread write_thread([connectionHandler] {
         while (1) {
-//            const short bufsize = 1024;
-//            char buf[bufsize];
-//            std::cin.getline(buf, bufsize);
-//            std::string line(buf);
-            string line="REGISTER adirelad 101 11-11-1998";
+            const short bufsize = 1024;
+            char buf[bufsize];
+            std::cin.getline(buf, bufsize);
+            std::string line(buf);
+//            string line="REGISTER adirelad 101 11-11-1998";
+            bool send  = connectionHandler->sendLine(line); //appends '\n' to the message. Therefor we send len+1 bytes.
             int len = line.length();
-            connectionHandler->sendLine(line); //appends '\n' to the message. Therefor we send len+1 bytes.
             std::cout << "Sent " << len + 1 << " bytes to server" << std::endl;
-            if (!connectionHandler->sendLine(line)) {
+            if (!send) {
                 std::cout << "Disconnected. Exiting...\n" << std::endl;
                 break;
             }
@@ -42,7 +42,8 @@ int main(int argc, char *argv[]) {
 
     std::thread read_thread([connectionHandler] {
         while (1) {
-            std::string answer;
+            std::string answer = "";
+            std::cout << "READ" << std::endl;
             // Get back an answer: by using the expected number of bytes (len bytes + newline delimiter)
             // We could also use: connectionHandler.getline(answer) and then get the answer without the newline char at the end
             if (!connectionHandler->getLine(answer)) {
@@ -58,11 +59,9 @@ int main(int argc, char *argv[]) {
             if (answer == "bye") {
                 std::cout << "Exiting...\n" << std::endl;
                 break;
-
             }
         }
     });
-    write_thread.join();
     read_thread.join();
 //    while (1) {
 //        const short bufsize = 1024;

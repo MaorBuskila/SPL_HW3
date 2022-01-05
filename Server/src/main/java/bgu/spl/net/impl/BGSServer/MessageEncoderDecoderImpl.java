@@ -18,17 +18,12 @@ public class MessageEncoderDecoderImpl implements MessageEncoderDecoder<Message>
     @Override
     public Message decodeNextByte(byte nextByte) {
         System.out.print(nextByte);
-//        if(nextByte=='\0') {
-//            System.out.println("adirelad");
-//        }
         if (nextByte == ';') {
             return popMessage();
         }
         if (len == 2) {
              opcode = bytesToShort(opBytes);
- //           opcodeint = changethissssss(opBytes);
         }
-
         pushByte(nextByte);
         return null; //not a line yet
     }
@@ -51,8 +46,7 @@ public class MessageEncoderDecoderImpl implements MessageEncoderDecoder<Message>
 //        String result = message.toString();
 //        return result.getBytes();
 //    }
-    public byte[] encode(Message message)
-    {
+    public byte[] encode(Message message) {
         return message.encode();
     }
 
@@ -63,8 +57,7 @@ public class MessageEncoderDecoderImpl implements MessageEncoderDecoder<Message>
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        String[] arguments = result.split("\0");//TODO:change to  "\0" !!!!!!!!!!!!!!!!!!!!!!!!!! this is just check for echo
-//        String[] arguments = result.split('\0');
+        String[] arguments = result.split("\0");
         len = 0;
         switch (opcode){
 //        switch (opcodeint){

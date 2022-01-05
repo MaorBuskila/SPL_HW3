@@ -31,9 +31,6 @@ public abstract class BaseServer<T> implements Server<T> {
         this.encdecFactory = encdecFactory;
 		this.sock = null;
 
-
-
-//        connections = ConnectionsImpl.getInstance();
     }
 
     @Override
