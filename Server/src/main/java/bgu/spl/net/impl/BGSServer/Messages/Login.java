@@ -23,7 +23,11 @@ public class Login extends Message {
             //Check if the user Exist if not Error
             //check if password are right if not Error
             //check if he is already logged in
-            if (user == null || user.getPassword().equals(password) || captcha.equals("0") || user.isLoggedIn()) {
+            if (user == null || !user.getPassword().equals(password) || captcha.equals("0") || user.isLoggedIn()) {
+                System.out.println(user +" = null");
+                System.out.println(user.getPassword() +" = " + password );
+                System.out.println(captcha + " = 0");
+                System.out.println(user.isLoggedIn() + " = true ");
                 Error errorMessage = new Error(OPCODE);
                 connections.send(connectionId , errorMessage);
             }
