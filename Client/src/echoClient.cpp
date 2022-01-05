@@ -50,6 +50,7 @@ int main(int argc, char *argv[]) {
                 std::cout << "Disconnected. Exiting...\n" << std::endl;
                 break;
             }
+            cout<< answer <<endl;
 
             int len = answer.length();
             // A C string must end with a 0 char delimiter.  When we filled the answer buffer from the socket
