@@ -197,9 +197,8 @@ short ConnectionHandler::opcodeFinder(vector<char> &bytesVec) {
 //todo: delete all above
 
 
-vector<string> ConnectionHandler::split(string &frame) {
+vector<string> ConnectionHandler::split(string &frame,char delimiter) {
 
-    string delimiter = " ";
     vector<string> arguments;
     size_t pos = 0;
     string token;
@@ -231,7 +230,7 @@ bool ConnectionHandler::sendFrameAscii(const std::string &frame, char delimiter)
     vector<char> charVec;
     char opByteArray[2];
     string line = frame;
-    vector<string> args = split(line);
+    vector<string> args = split(line,' ');
     string type = args[0];
     if (type == "REGISTER") {
         short OPCODE = 1;
@@ -364,6 +363,12 @@ bool ConnectionHandler::sendFrameAscii(const std::string &frame, char delimiter)
         shortToBytes(OPCODE, opByteArray);
         charVec.push_back(*opByteArray);
         charVec.push_back(*(opByteArray + 1));
+        string username = args[1];
+        for (char c: username) {
+            charVec.push_back(c);
+//            wantedLength++;
+        }
+        charVec.push_back('\0');
     }
 
     int len = 0;

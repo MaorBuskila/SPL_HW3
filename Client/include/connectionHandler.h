@@ -21,7 +21,7 @@ public:
  
     // Connect to the remote machine
     bool connect();
-    vector<string> split(std::string& frame);
+    vector<string> split(std::string& frame,char delimiter);
     void shortToBytes(short num, char* bytesArr);
  
     // Read a fixed number of bytes from the server - blocking.
@@ -55,7 +55,7 @@ public:
 
     short bytesToShort(char *bytesArr);
 
-    vector<string> split(string &frame, string delimiter);
+//    vector<string> split(string &frame, string delimiter);
 }; //class ConnectionHandler
  
 #endif
