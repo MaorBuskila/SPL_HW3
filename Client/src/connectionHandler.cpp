@@ -39,6 +39,7 @@ bool ConnectionHandler::getBytes(char bytes[], unsigned int bytesToRead) {
     try {
         while (!error && bytesToRead > tmp) {
             tmp += socket_.read_some(boost::asio::buffer(bytes + tmp, bytesToRead - tmp), error);
+            cout<< bytes ;
         }
         if (error)
             throw boost::system::system_error(error);
@@ -52,7 +53,6 @@ bool ConnectionHandler::getBytes(char bytes[], unsigned int bytesToRead) {
 bool ConnectionHandler::sendBytes(const char bytes[], int bytesToWrite) {
     int tmp = 0;
     boost::system::error_code error;
-
     try {
         while (!error && bytesToWrite > tmp) {
             tmp += socket_.write_some(boost::asio::buffer(bytes + tmp, bytesToWrite - tmp), error);
@@ -87,6 +87,8 @@ bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
     char *Name;
     char *opcodeFrom;
     int counterForSpace = 0;
+    int counterPerNumber=0;
+    short num=-99999999;
     bool checkStart = false;
     vector<char> opcodeBytes;
     vector<char> msgOpcodeBytes;
@@ -97,10 +99,11 @@ bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
         do {
             if (opcode == -1) {
                 getBytes(&ch, 1);
-                cout<< ch << endl;
-
-                opcodeBytes.push_back(ch);
-                opcodeCounter++;
+                if(ch!='\0') {
+                    cout<<"ch is :   "<< ch << endl;
+                    opcodeBytes.push_back(ch);
+                    opcodeCounter++;
+                }
                 if (opcodeCounter == 2) {
                     opcode = opcodeFinder(opcodeBytes);
                 }
@@ -151,13 +154,8 @@ bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
                                     msg += &" " [ch];
                             }
                             if (msgOpcode == 7 || msgOpcode == 8){ //LOGSTAT
-                                counterForSpace++;
-                                getBytes(&ch, 1);
-                                Name = Name + ch;
-                                if (counterForSpace == 2) {
-                                    msg += " ";
-                                    counterForSpace = 0;
-                                }
+
+                               logStatOrStatDecode(msg,msgOpcode);
                             }
                         }
 //                    } else {
@@ -165,6 +163,7 @@ bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
 //                        ackCounter--;
 //                    }
                 }
+
                 if (opcode == 11)//ERROR
                 {
                     if (msgOpcode == -1) {
@@ -191,9 +190,39 @@ bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
     frame = msg;
     return true;
 }
+void ConnectionHandler::logStatOrStatDecode(std::string& msg,short subject) {
+    char* byte= new char[2];
+    char ch;
+    //bool enter= true;
+    msg+=" ";
+        getBytes(&ch, 1);
+        byte[0]=ch;
+        getBytes(&ch, 1);
+        byte[1]=ch;
+        short age=bytesToShort(byte);
+        getBytes(&ch, 1);
+        byte[0]=ch;
+        getBytes(&ch, 1);
+        byte[1]=ch;
+        short numPost=bytesToShort(byte);
+        getBytes(&ch, 1);
+        byte[0]=ch;
+        getBytes(&ch, 1);
+        byte[1]=ch;
+        short numfollowers=bytesToShort(byte);
+        getBytes(&ch, 1);
+        byte[0]=ch;
+        getBytes(&ch, 1);
+        byte[1]=ch;
+        short numfollowing=bytesToShort(byte);
+        msg+=std::to_string(age)+" "+std::to_string(numPost)+" "+std::to_string(numfollowers)+" "+std::to_string(numfollowing);
+    }
+
+
 
 short ConnectionHandler::opcodeFinder(vector<char> &bytesVec) {
     short temp = 10 * (bytesVec[0] - '0') + bytesVec[1] - '0';
+    cout<< "OPCODE IS : " << temp <<endl;
     return temp;
 }
 //todo: delete all above
