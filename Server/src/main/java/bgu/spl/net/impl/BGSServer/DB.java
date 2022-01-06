@@ -26,9 +26,10 @@ public class DB {
         user.register();
 
     }
-    public void addMessage(String message)
+    public void addMessage(User user, String message)
     {
         pmAndPostMessages.add(message);
+        user.addMessage(message);
     }
 
     public boolean follow(int userId, String followUserName) {

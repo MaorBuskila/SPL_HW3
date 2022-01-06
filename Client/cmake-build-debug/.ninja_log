@@ -10,3 +10,8 @@
 81	6035	1641491098778148300	CMakeFiles/Client.dir/src/echoClient.cpp.o	7558f70c26a00b5d
 126	7001	1641491099778599500	CMakeFiles/Client.dir/src/connectionHandler.cpp.o	175f68f74a1e509
 7001	7840	1641491100618867700	Client.exe	b9d8caeeeb7b0fec
+150	6393	1641496986540843100	CMakeFiles/Client.dir/src/echoClient.cpp.o	7558f70c26a00b5d
+195	7333	1641496987493985500	CMakeFiles/Client.dir/src/connectionHandler.cpp.o	175f68f74a1e509
+7334	8214	1641496988368960900	Client.exe	b9d8caeeeb7b0fec
+200	11512	1641500962476767800	CMakeFiles/Client.dir/src/connectionHandler.cpp.o	175f68f74a1e509
+11515	12847	1641500963811995200	Client.exe	b9d8caeeeb7b0fec

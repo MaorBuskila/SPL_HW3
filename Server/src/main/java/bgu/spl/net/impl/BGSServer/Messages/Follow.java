@@ -20,14 +20,16 @@ public class Follow extends Message {
         boolean command;
         if (followOrUn.equals("0")) { // follow command
             command = database.follow(connectionId, username);
-        }
-        else { // unfollow command
+        } else { // unfollow command
             command = database.unfollow(connectionId, username);
-
         }
         if (command) {
-
-            ACK ackMessage = new ACK(OPCODE, (this.username+'\0').getBytes(StandardCharsets.UTF_8));
+            ACK ackMessage;
+            if (followOrUn.equals("0")) { // follow command
+                ackMessage = new ACK(OPCODE, ('\0' + '0' + this.username + '\0').getBytes(StandardCharsets.UTF_8));
+            } else {
+                ackMessage = new ACK(OPCODE, ('\0' + '1' + this.username + '\0').getBytes(StandardCharsets.UTF_8));
+            }
             connections.send(connectionId, ackMessage);
         } else {
             Error errorMessage = new Error(OPCODE);

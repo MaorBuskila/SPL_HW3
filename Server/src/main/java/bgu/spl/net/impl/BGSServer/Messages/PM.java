@@ -26,25 +26,30 @@ public class PM extends Message {
 //            Error errorMessage = new Error(OPCODE);
 //            connections.send(connectionId , errorMessage);
 //        }
-        if(!database.getRegisterUsers().containsKey(connectionId) || !database.getUser(connectionId).isLoggedIn() ||
-        !database.getRegisterUsers().containsKey(database.getUserName_ConnectionID().get(this.username)) || !database.getUser(connectionId).getFollowing().containsKey(database.getUserName_ConnectionID().get(this.username)))
+        if(!database.getRegisterUsers().containsKey(connectionId) ||
+                !database.getUser(connectionId).isLoggedIn() || //check if user is not logged in
+                !database.getRegisterUsers().containsKey(database.getUserName_ConnectionID().get(this.username)) || //check if registers list not conteain the connection ID
+                !database.getUser(connectionId).getFollowing().containsKey(database.getUserName_ConnectionID().get(this.username))) //check if the user is not follow the reciepient user
         {
 
             Error errorMessage = new Error(OPCODE);
             connections.send(connectionId , errorMessage);
 
         }
-        else
-        {
+        else {
             String filteredMessage=this.content;
             for(String s: database.getForbiddenWords())
             {
                 filteredMessage.replaceAll(s,"<filtered>");
             }
-            database.addMessage(filteredMessage);
+            database.addMessage(database.getUser(database.getUserName_ConnectionID().get(username)), filteredMessage);
+
+//TODO: didnt do something with Time' impliement this with queue when he is not log in.
+
+
             ACK ackMessage = new ACK(OPCODE,null);
             connections.send(connectionId , ackMessage);
-            Notification notificationMessage=new Notification((byte)0,database.getUser(connectionId).getUsername(),this.content);
+            Notification notificationMessage = new Notification((byte)0,database.getUser(connectionId).getUsername(),this.content);
             int tmpUserNameID = database.getUserName_ConnectionID().get(this.username);
             connections.send(tmpUserNameID,notificationMessage);
             //TODO notification

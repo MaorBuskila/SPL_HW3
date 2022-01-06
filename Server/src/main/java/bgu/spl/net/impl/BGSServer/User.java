@@ -27,6 +27,7 @@ public class User {
     private ConcurrentHashMap<User,Timestamp> timeLastMessageRecieved = new ConcurrentHashMap<>();
     private Vector<User> usersThatBlockMe;
     private BlockingQueue<String> messages;
+    private BlockingQueue<String> unReadMessage = new LinkedBlockingQueue<>();
 
     public User(String username, String password, Date birthday) {
         this.username = username;
@@ -51,9 +52,6 @@ public class User {
     public void register()
     {
         isRegister=true;
-    }
-    public void unregister(){
-        isRegister=false;
     }
     public String getPassword() {
         return password;
@@ -81,7 +79,10 @@ public class User {
 
     public void addMessage(String message) {
         try {
+            if (this.isLoggedIn())
             messages.put(message);
+            else
+                unReadMessage.put(message);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

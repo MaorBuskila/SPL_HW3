@@ -286,6 +286,21 @@ bool ConnectionHandler::sendFrameAscii(const std::string &frame, char delimiter)
         shortToBytes(OPCODE, opByteArray);
         charVec.push_back(*opByteArray);
         charVec.push_back(*(opByteArray + 1));
+        string userName = args[1];
+        for (char c: userName) {
+            charVec.push_back(c);
+        }
+        charVec.push_back('\0');
+        string content = args[2];
+        for (char c: content) {
+            charVec.push_back(c);
+        }
+        charVec.push_back('\0');
+        string date = args[3];
+        for (char c: content) {
+            charVec.push_back(c);
+        }
+        charVec.push_back('\0');
     }
 
     if(type=="LOGSTAT")
