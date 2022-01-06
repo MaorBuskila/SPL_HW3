@@ -78,22 +78,34 @@ bool ConnectionHandler::sendLine(std::string &line) {
 
 bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
 
-
+//
     char ch;
     short opcode = -1;
-    int opcodeCounter = 0;
-    int msgOpcodeCounter = 0;
-    short msgOpcode = -1;
-    char *Name;
-    char *opcodeFrom;
-    int counterForSpace = 0;
-    int counterPerNumber=0;
-    short num=-99999999;
-    bool checkStart = false;
+//    int opcodeCounter = 0;
+//    int msgOpcodeCounter = 0;
+//    short msgOpcode = -1;
+//    char *Name;
+//    char *opcodeFrom;
+//    int counterForSpace = 0;
+//    int counterPerNumber=0;
+//    short num=-99999999;
+//    bool checkStart = false;
     vector<char> opcodeBytes;
-    vector<char> msgOpcodeBytes;
-    int ackCounter = 2;
-    string msg = "";
+//    vector<char> msgOpcodeBytes;
+//    int ackCounter = 2;
+//    string msg = "";
+    int len =0;
+    if(len<2)
+    {getBytes(&ch, 1);
+        opcodeBytes.push_back(ch);
+        len++; }
+    if(len==2)
+        opcode=
+
+
+    getBytes(&ch, 1);
+
+
 
     try {
         do {
