@@ -66,12 +66,10 @@ bool ConnectionHandler::sendBytes(const char bytes[], int bytesToWrite) {
 }
 
 bool ConnectionHandler::getLine(std::string &line) {
-
     return getFrameAscii(line, ';');
 }
 
 bool ConnectionHandler::sendLine(std::string &line) {
-    cout << "sennding " << line << endl;
     return sendFrameAscii(line, ';');
 }
 
@@ -211,24 +209,18 @@ bool ConnectionHandler::sendFrameAscii(const std::string &frame, char delimiter)
         string username = args[1];
         for (char c: username) {
             charVec.push_back(c);
-//            wantedLength++;
         }
         charVec.push_back('\0');
-//        wantedLength++;
         string password = args[2];
         for (char c: password) {
             charVec.push_back(c);
-//            wantedLength++;
         }
         charVec.push_back('\0');
-//        wantedLength++;
         string birtday = args[3];
         for (char c: birtday) {
             charVec.push_back(c);
-//            wantedLength++;
         }
         charVec.push_back('\0');
-//        wantedLength++;
 
     }
     if (type == "LOGIN") {
@@ -236,26 +228,19 @@ bool ConnectionHandler::sendFrameAscii(const std::string &frame, char delimiter)
         shortToBytes(OPCODE, opByteArray);
         charVec.push_back(*opByteArray);
         charVec.push_back(*(opByteArray + 1));
-//        wantedLength += 2;
         string username = args[1];
         for (char c: username) {
             charVec.push_back(c);
-//            wantedLength++;
         }
         charVec.push_back('\0');
-//        wantedLength++;
         string password = args[2];
         for (char c: password) {
             charVec.push_back(c);
-//            wantedLength++;
         }
         charVec.push_back('\0');
-//        wantedLength++;
         string captcha = args[3];
         charVec.push_back(captcha[0]);
-//        wantedLength++;
         charVec.push_back('\0');
-//        wantedLength++;
 
 
     }
@@ -272,7 +257,9 @@ bool ConnectionHandler::sendFrameAscii(const std::string &frame, char delimiter)
         charVec.push_back(*opByteArray);
         charVec.push_back(*(opByteArray + 1));
         string followOrUn = args[1];
-        charVec.push_back(followOrUn[0]);
+        if (followOrUn == "0") charVec.push_back('0');
+        else charVec.push_back('1');
+        charVec.push_back('\0');
         string username = args[2];
         for (char c: username) {
             charVec.push_back(c);
@@ -314,7 +301,6 @@ bool ConnectionHandler::sendFrameAscii(const std::string &frame, char delimiter)
         shortToBytes(OPCODE,opByteArray);
         charVec.push_back(*opByteArray);
         charVec.push_back(*(opByteArray+1));
-        //adir adir adir adir
         for(int i=1;i<args.size();i++)
         {
             for(char ch : args[i])
@@ -346,6 +332,7 @@ bool ConnectionHandler::sendFrameAscii(const std::string &frame, char delimiter)
     char byteArray[charVec.size()];
     for (char &c: charVec) {
         byteArray[len++] = c;
+        cout << c ;
     }
 
     bool result = sendBytes(byteArray, charVec.size());

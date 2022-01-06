@@ -23,6 +23,7 @@ public class MessageEncoderDecoderImpl implements MessageEncoderDecoder<Message>
         }
         if (nextByte == ';') {
             return popMessage();
+
         }
 
 
@@ -56,16 +57,14 @@ public class MessageEncoderDecoderImpl implements MessageEncoderDecoder<Message>
         String result = null;
         try {
             result = new String(bytes, "UTF-8");
+            Arrays.fill(bytes, (byte) '\0');
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
 
         String[] arguments = result.split("\0");
         len = 0;
-//        bytes = null;
         switch (opcode) {
-//        switch (opcodeint){
-
             case 1: //register
                 return new Register(arguments[0], arguments[1], arguments[2]);
             case 2:
@@ -86,7 +85,7 @@ public class MessageEncoderDecoderImpl implements MessageEncoderDecoder<Message>
                 return new Block(arguments[0]);
 
         }
-        Arrays.fill(bytes, (byte) '\0');
+
         Arrays.fill(arguments, null);
         return null;
     }

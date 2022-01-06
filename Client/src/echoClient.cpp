@@ -32,7 +32,7 @@ int main(int argc, char *argv[]) {
 //            string line="REGISTER adirelad 101 11-11-1998";
             bool send  = connectionHandler->sendLine(line); //appends '\n' to the message. Therefor we send len+1 bytes.
             int len = line.length();
-            std::cout << "Sent " << len + 1 << " bytes to server" << std::endl;
+            std::cout << "Sent " << line << " , " << len + 1 << " bytes to server" << std::endl;
             if (!send) {
                 std::cout << "Disconnected. Exiting...\n" << std::endl;
                 break;

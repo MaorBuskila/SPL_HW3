@@ -12,8 +12,7 @@ public class Follow extends Message {
 
     public Follow(String followOrUn, String username) {
         this.followOrUn = followOrUn;
-        this.username = String.valueOf(username);
-        System.out.println("debug");
+        this.username = username;
     }
 
     @Override

@@ -33,10 +33,10 @@ public class DB {
 
     public boolean follow(int userId, String followUserName) {
 //        check if the user exist
-        if (userName_ConnectionID.contains(followUserName)) {
+        if (userName_ConnectionID.containsKey(followUserName)) {
             int toFollowID = userName_ConnectionID.get(followUserName);
             //check that he is logged in && not already follow him
-            if (registerUsers.containsKey(userId) && registerUsers.get(userId).isLoggedIn() && !registerUsers.get(userId).getFollowing().contains(toFollowID)) {
+            if (registerUsers.containsKey(userId) && registerUsers.get(userId).isLoggedIn() && !registerUsers.get(userId).getFollowing().containsKey(toFollowID)) {
                 registerUsers.get(userId).addFollowing(userId, registerUsers.get(toFollowID)); //add following
                 registerUsers.get(toFollowID).addFollower(userId, registerUsers.get(userId)); //add follower
                 return true;

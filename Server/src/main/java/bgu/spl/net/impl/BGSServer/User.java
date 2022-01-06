@@ -61,23 +61,21 @@ public class User {
     public ConcurrentHashMap<Integer, User> getFollowers() {
         return followers;
     }
-
     public ConcurrentHashMap<Integer, User> getFollowing() {
         return following;
     }
     public void addFollower(int id,User user) {
         followers.put(id,user);
     }
-
     public void removeFollower(int userId, User user) {
     }
     public void addFollowing(int id,User user) {
         following.put(id,user);
-        followTime.put(user,new Timestamp(System.currentTimeMillis()));
+//        followTime.put(user,new Timestamp(System.currentTimeMillis()));
     }
     public void removeFollowing(int id,User user) {
         following.remove(id,user);
-        followTime.remove(user,new Timestamp(System.currentTimeMillis()));
+//        followTime.remove(user,new Timestamp(System.currentTimeMillis()));
     }
 
     public void addMessage(String message) {
