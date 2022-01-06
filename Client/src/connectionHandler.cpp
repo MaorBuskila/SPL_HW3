@@ -39,7 +39,6 @@ bool ConnectionHandler::getBytes(char bytes[], unsigned int bytesToRead) {
     try {
         while (!error && bytesToRead > tmp) {
             tmp += socket_.read_some(boost::asio::buffer(bytes + tmp, bytesToRead - tmp), error);
-            cout<< bytes ;
         }
         if (error)
             throw boost::system::system_error(error);
@@ -78,123 +77,64 @@ bool ConnectionHandler::sendLine(std::string &line) {
 
 bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
 
-
+    char* byte= new char[2];
     char ch;
-    short opcode = -1;
-    int opcodeCounter = 0;
-    int msgOpcodeCounter = 0;
-    short msgOpcode = -1;
-    char *Name;
-    char *opcodeFrom;
-    int counterForSpace = 0;
-    int counterPerNumber=0;
-    short num=-99999999;
-    bool checkStart = false;
-    vector<char> opcodeBytes;
-    vector<char> msgOpcodeBytes;
-    int ackCounter = 2;
-    string msg = "";
-
+    // Stop when we encounter the null character.
+    // Notice that the null character is not appended to the frame string.
     try {
-        do {
-            if (opcode == -1) {
-                getBytes(&ch, 1);
-                if(ch!='\0') {
-                    cout<<"ch is :   "<< ch << endl;
-                    opcodeBytes.push_back(ch);
-                    opcodeCounter++;
+        //std::cout << "i before opcode" << std::endl;
+        getBytes(&ch, 1);
+        byte[0]=ch;
+        getBytes(&ch, 1);
+        byte[1]=ch;
+        //std::cout << "i after opcode" << std::endl;
+        short opcode=bytesToShort(byte);
+        //std::cout << "my opcode is:"<<opcode << std::endl;
+        if(opcode==10||opcode==11){
+            getBytes(&ch, 1);
+            byte[0]=ch;
+            getBytes(&ch, 1);
+            byte[1]=ch;
+            // std::cout << opcode << std::endl;
+            short subject=bytesToShort(byte);
+            //std::cout << subject << std::endl;
+            if(opcode==10){
+                if(subject==7||subject==8) {
+                    frame+="ACK "+std::to_string(subject)+" ";
+                    logStatOrStatDecode(frame, subject);
+                    return true;
                 }
-                if (opcodeCounter == 2) {
-                    opcode = opcodeFinder(opcodeBytes);
-                }
-            } else {
-                if (opcode == 9) //notification
-                {
-                    if (!checkStart) {
-                        msg += "NOTIFICATION ";
-                        getBytes(&ch, 1);
-                        int pmOrPublic = ch - '0';
-                        if (pmOrPublic == 0) {
-                            msg += "PM ";
-                        } else {
-                            msg += "Public ";
-                        }
-                        checkStart = true;
-                    } else {
-                        getBytes(&ch, 1);
-                        if (ch != '\0') {
-                            Name = Name + ch;
-                        } else {
-                            msg = msg + Name + " ";
-                        }
-                    }
-                }
-                //1001; -REGISTER
-                //1002; LOGIN
-
-                if (opcode == 10){//ACK
-                    getBytes(&ch, 1);
-//                    if (ackCounter == 0) {
-                        if (msgOpcode == -1) {
-                            msgOpcodeBytes.push_back(ch);
-                            msgOpcodeCounter++;
-                            if (msgOpcodeCounter == 2) {
-                                msgOpcode = opcodeFinder(msgOpcodeBytes);
-                                msg = "ACK "  + to_string(msgOpcode);
-                            }
-                        }
-                        else {
-                            if (msgOpcode == 3){ //LOGOUT
-                                cout  << "CLOSING" << endl;
-                                this->close();
-                            }
-                            if (msgOpcode == 4){ //FOLLOW
-                                //getBytes(&ch, 1);
-                                if (ch == '\0')
-                                    msg += &" " [ch];
-                            }
-                            if (msgOpcode == 7 || msgOpcode == 8){ //LOGSTAT
-
-                               logStatOrStatDecode(msg,msgOpcode);
-                            }
-                        }
-//                    } else {
-//                        if (ackCounter == 2) msg = msg + "ACK ";
-//                        ackCounter--;
-//                    }
-                }
-
-                if (opcode == 11)//ERROR
-                {
-                    if (msgOpcode == -1) {
-                        getBytes(&ch, 1);
-                        msgOpcodeBytes.push_back(ch);
-                        msgOpcodeCounter++;
-                        if (msgOpcodeCounter == 2) {
-                            msgOpcode = opcodeFinder(msgOpcodeBytes);
-                            msg = msg + "ERROR " + to_string(msgOpcode);
-                            frame = msg;
-                            return true;
-                        }
-                    }
-                }
+                else
+                    frame+="ACK "+std::to_string(subject);
             }
-            //getBytes(&ch, 1);
-            //frame.append(1, ch);
-        } while (delimiter != ch);
-
-    } catch (std::exception &e) {
+            if(opcode==11)
+                frame+="ERROR "+std::to_string(subject);
+//            if(delimiter != ch)
+//                frame+=" ";
+        }
+        if(opcode==9){
+            frame+="NOTIFICATION ";
+        }
+        if(opcode==12)
+            frame+="BLOCK ";
+        do{
+            getBytes(&ch, 1);
+          //  frame.append(1, ch);
+        }while (delimiter != ch);
+    } catch (std::exception& e) {
         std::cerr << "recv failed (Error: " << e.what() << ')' << std::endl;
         return false;
     }
-    frame = msg;
     return true;
 }
+
+
+
+
 void ConnectionHandler::logStatOrStatDecode(std::string& msg,short subject) {
     char* byte= new char[2];
     char ch;
     //bool enter= true;
-    msg+=" ";
         getBytes(&ch, 1);
         byte[0]=ch;
         getBytes(&ch, 1);

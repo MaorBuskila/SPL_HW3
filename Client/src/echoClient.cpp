@@ -57,7 +57,7 @@ int main(int argc, char *argv[]) {
             // we filled up to the \n char - we must makefile sure now that a 0 char is also present. So we truncate last character.
 //            answer.resize(len );
             std::cout << "Reply: " << answer << " " << len << " bytes " << std::endl << std::endl;
-            if (answer == "bye") {
+            if (answer == "ACK 3") {
                 std::cout << "Exiting...\n" << std::endl;
                 break;
             }
