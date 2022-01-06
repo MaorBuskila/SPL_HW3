@@ -47,7 +47,7 @@ public class DB {
 
     public boolean unfollow(int userId, String followUserName) {
 //        check if the user exist
-        if (userName_ConnectionID.contains(followUserName)) {
+        if (userName_ConnectionID.containsKey(followUserName)) {
             int followID = userName_ConnectionID.get(followUserName);
             //check that he is logged in && already follow him
             if (registerUsers.containsKey(userId)  && registerUsers.get(userId).isLoggedIn() && !registerUsers.get(userId).getFollowing().contains(followID)) {

@@ -1,4 +1,4 @@
-#include <stdlib.h>
+#include <thread>
 #include "../include/connectionHandler.h"
 
 using namespace std;
@@ -23,7 +23,7 @@ int main(int argc, char *argv[]) {
     //From here we will see the rest of the ehco client implementation:
     //create 2 Threads for writing and reading
 
-    std::thread write_thread([connectionHandler] {
+    thread write_thread([connectionHandler] {
         while (1) {
             const short bufsize = 1024;
             char buf[bufsize];
@@ -32,7 +32,7 @@ int main(int argc, char *argv[]) {
 //            string line="REGISTER adirelad 101 11-11-1998";
             bool send  = connectionHandler->sendLine(line); //appends '\n' to the message. Therefor we send len+1 bytes.
             int len = line.length();
-            std::cout << "Sent " << line << " , " << len + 1 << " bytes to server" << std::endl;
+            std::cout << "Sent: " << line << " , " << len + 1 << " bytes to server" << std::endl;
             if (!send) {
                 std::cout << "Disconnected. Exiting...\n" << std::endl;
                 break;
@@ -40,17 +40,16 @@ int main(int argc, char *argv[]) {
         }
     });
 
-    std::thread read_thread([connectionHandler] {
+    thread read_thread([connectionHandler] {
         while (1) {
             std::string answer = "";
-            std::cout << "READ" << std::endl;
             // Get back an answer: by using the expected number of bytes (len bytes + newline delimiter)
             // We could also use: connectionHandler.getline(answer) and then get the answer without the newline char at the end
             if (!connectionHandler->getLine(answer)) {
                 std::cout << "Disconnected. Exiting...\n" << std::endl;
                 break;
             }
-            cout<< answer <<endl;
+//            cout<< answer <<endl;
 
             int len = answer.length();
             // A C string must end with a 0 char delimiter.  When we filled the answer buffer from the socket

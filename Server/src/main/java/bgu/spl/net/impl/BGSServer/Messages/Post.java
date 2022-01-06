@@ -29,13 +29,15 @@ public class Post extends Message {
                tmpuser.addMessage(content);
            }
             extractUsers(content);
-           for (String additionalUser : additionalUsers){
-             User additionalTmpUser = database.getRegisterUsers().get(database.getUserName_ConnectionID().get(additionalUser));
-               if(!user.getFollowers().contains(additionalTmpUser)){
-                   additionalTmpUser.addMessage(content);
-                   //TODO notification
-               }
+           if(!additionalUsers.containsAll(null)) {
+               for (String additionalUser : additionalUsers) {
+                   User additionalTmpUser = database.getRegisterUsers().get(database.getUserName_ConnectionID().get(additionalUser));
+                   if (!user.getFollowers().contains(additionalTmpUser)) {
+                       additionalTmpUser.addMessage(content);
+                       //TODO notification
+                   }
 
+               }
            }
 
         }

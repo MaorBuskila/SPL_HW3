@@ -158,11 +158,11 @@ void ConnectionHandler::logStatOrStatDecode(std::string& msg,short subject) {
 
 
 
-short ConnectionHandler::opcodeFinder(vector<char> &bytesVec) {
-    short temp = 10 * (bytesVec[0] - '0') + bytesVec[1] - '0';
-    cout<< "OPCODE IS : " << temp <<endl;
-    return temp;
-}
+//short ConnectionHandler::opcodeFinder(vector<char> &bytesVec) {
+//    short temp = 10 * (bytesVec[0] - '0') + bytesVec[1] - '0';
+//    cout<< "OPCODE IS : " << temp <<endl;
+//    return temp;
+//}
 //todo: delete all above
 
 
@@ -332,7 +332,6 @@ bool ConnectionHandler::sendFrameAscii(const std::string &frame, char delimiter)
     char byteArray[charVec.size()];
     for (char &c: charVec) {
         byteArray[len++] = c;
-        cout << c ;
     }
 
     bool result = sendBytes(byteArray, charVec.size());

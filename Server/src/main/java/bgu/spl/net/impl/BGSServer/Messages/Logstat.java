@@ -28,10 +28,10 @@ public class Logstat extends Message {
                     //bytes[1] = shortToBytes(user.getNumberOfPost());
                     //bytes[2] = shortToBytes(user.getNumberOfFollowers());
                     //bytes[3] = shortToBytes(user.getNumberOfFollowing());
-                    short age=user.getAge();
-                    short numberofPost=user.getNumberOfPost();
-                    short numberOfFollowers=user.getNumberOfFollowers();
-                    short numbereOfFollowing= user.getNumberOfFollowing();
+                    short age=tmpUser.getAge();
+                    short numberofPost=tmpUser.getNumberOfPost();
+                    short numberOfFollowers=tmpUser.getNumberOfFollowers();
+                    short numbereOfFollowing= tmpUser.getNumberOfFollowing();
                     byte[] byteArray=new byte[8];
 //                    byte[] tmpByteArray=new byte[2];
 //

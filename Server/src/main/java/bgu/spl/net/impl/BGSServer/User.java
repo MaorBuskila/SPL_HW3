@@ -23,8 +23,8 @@ public class User {
     private boolean isLogIn=false;
     private short numberOfPost=0;
     //TODO TimeStamp
-    private ConcurrentHashMap<User, Timestamp> followTime;
-    private ConcurrentHashMap<User,Timestamp> timeLastMessageRecieved;
+    private ConcurrentHashMap<User, Timestamp> followTime = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<User,Timestamp> timeLastMessageRecieved = new ConcurrentHashMap<>();
     private Vector<User> usersThatBlockMe;
     private BlockingQueue<String> messages;
 
@@ -67,15 +67,16 @@ public class User {
     public void addFollower(int id,User user) {
         followers.put(id,user);
     }
-    public void removeFollower(int userId, User user) {
+    public void removeFollower(int id, User user) {
+        followers.remove(id,user);
     }
     public void addFollowing(int id,User user) {
         following.put(id,user);
-//        followTime.put(user,new Timestamp(System.currentTimeMillis()));
+        followTime.put(user,new Timestamp(System.currentTimeMillis()));
     }
     public void removeFollowing(int id,User user) {
         following.remove(id,user);
-//        followTime.remove(user,new Timestamp(System.currentTimeMillis()));
+        followTime.remove(user,new Timestamp(System.currentTimeMillis()));
     }
 
     public void addMessage(String message) {
