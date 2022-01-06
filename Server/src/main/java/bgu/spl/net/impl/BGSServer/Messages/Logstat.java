@@ -45,8 +45,8 @@ public class Logstat extends Message {
                     byteArray[6]=shortToBytes(numbereOfFollowing)[0];
                     byteArray[7]=shortToBytes(numbereOfFollowing)[1];
                     ACK ackMessage = new ACK(OPCODE, byteArray  );
-                    for(int i=0;i<byteArray.length;i++)
-                        System.out.print(byteArray[i]+ " ");
+//                    for(int i=0;i<byteArray.length;i++)
+//                        System.out.print(byteArray[i]+ " ");
                     connections.send(connectionId, ackMessage);
                 }
             }

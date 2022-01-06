@@ -50,23 +50,22 @@ public class ACK extends Message{
 
                 }
             byteArray[k]=delimeter;
+            for(int i=0;i<byteArray.length;i++)
+                System.out.print(byteArray[i]+ " ");
 
             return byteArray;
             }
 
-        else
-        {
-//            byte[] allByteArray = new byte[5];
-//            ByteBuffer buff = ByteBuffer.wrap(allByteArray);
-//            buff.put(opByte);
-//            buff.put(msgByte);
-//            buff.put(delimeter);
-//
-//            byte[] combined = buff.array();
-//
-//
-//            return combined;
-            return (""+OPCODE+'0'+ messageOPcode + ';').getBytes(StandardCharsets.UTF_8);
+        else {
+            byte[] byteArray = new byte[5];//* optional[0].length
+            byteArray[0] = shortToBytes(OPCODE)[0];
+            byteArray[1] = shortToBytes(OPCODE)[1];
+            byteArray[2] = shortToBytes(messageOPcode)[0];
+            byteArray[3] = shortToBytes(messageOPcode)[1];
+            byteArray[4]=(byte)';';
+            for(int i=0;i<byteArray.length;i++)
+                System.out.print(byteArray[i]+ " ");
+            return byteArray;
         }
     }
 
