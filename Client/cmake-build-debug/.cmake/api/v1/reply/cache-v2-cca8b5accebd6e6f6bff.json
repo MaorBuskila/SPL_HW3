@@ -135,7 +135,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/cygdrive/c/Users/maorb/OneDrive/Ben-Gurion/SPL/HW3/assignment3/Client/cmake-build-debug"
+			"value" : "/cygdrive/c/Users/nirya/CLionProjects/SPL_Assignment3/Client/cmake-build-debug"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -183,7 +183,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/cygdrive/c/Users/maorb/AppData/Local/JetBrains/CLion2021.3/cygwin_cmake/bin/cmake.exe"
+			"value" : "/cygdrive/c/Users/nirya/AppData/Local/JetBrains/CLion2021.3/cygwin_cmake/bin/cmake.exe"
 		},
 		{
 			"name" : "CMAKE_CPACK_COMMAND",
@@ -195,7 +195,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/cygdrive/c/Users/maorb/AppData/Local/JetBrains/CLion2021.3/cygwin_cmake/bin/cpack.exe"
+			"value" : "/cygdrive/c/Users/nirya/AppData/Local/JetBrains/CLion2021.3/cygwin_cmake/bin/cpack.exe"
 		},
 		{
 			"name" : "CMAKE_CTEST_COMMAND",
@@ -207,7 +207,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/cygdrive/c/Users/maorb/AppData/Local/JetBrains/CLion2021.3/cygwin_cmake/bin/ctest.exe"
+			"value" : "/cygdrive/c/Users/nirya/AppData/Local/JetBrains/CLion2021.3/cygwin_cmake/bin/ctest.exe"
 		},
 		{
 			"name" : "CMAKE_CXX_COMPILER",
@@ -659,7 +659,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/cygdrive/c/Users/maorb/OneDrive/Ben-Gurion/SPL/HW3/assignment3/Client"
+			"value" : "/cygdrive/c/Users/nirya/CLionProjects/SPL_Assignment3/Client"
 		},
 		{
 			"name" : "CMAKE_INSTALL_PREFIX",
@@ -695,11 +695,11 @@
 			[
 				{
 					"name" : "HELPSTRING",
-					"value" : "No help, variable specified on the command line."
+					"value" : "make program"
 				}
 			],
-			"type" : "UNINITIALIZED",
-			"value" : "/cygdrive/c/Users/maorb/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/213.6461.46/bin/ninja/cygwin/ninja.exe"
+			"type" : "FILEPATH",
+			"value" : "/cygdrive/c/Program Files/JetBrains/CLion 2021.3.2/bin/ninja/cygwin/ninja.exe"
 		},
 		{
 			"name" : "CMAKE_MODULE_LINKER_FLAGS",
@@ -1039,7 +1039,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/cygdrive/c/Users/maorb/AppData/Local/JetBrains/CLion2021.3/cygwin_cmake/share/cmake-3.21.1"
+			"value" : "/cygdrive/c/Users/nirya/AppData/Local/JetBrains/CLion2021.3/cygwin_cmake/share/cmake-3.21.1"
 		},
 		{
 			"name" : "CMAKE_SHARED_LINKER_FLAGS",
@@ -1287,7 +1287,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/cygdrive/c/Users/maorb/OneDrive/Ben-Gurion/SPL/HW3/assignment3/Client/cmake-build-debug"
+			"value" : "/cygdrive/c/Users/nirya/CLionProjects/SPL_Assignment3/Client/cmake-build-debug"
 		},
 		{
 			"name" : "Client_IS_TOP_LEVEL",
@@ -1311,7 +1311,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/cygdrive/c/Users/maorb/OneDrive/Ben-Gurion/SPL/HW3/assignment3/Client"
+			"value" : "/cygdrive/c/Users/nirya/CLionProjects/SPL_Assignment3/Client"
 		},
 		{
 			"name" : "FIND_PACKAGE_MESSAGE_DETAILS_Boost",

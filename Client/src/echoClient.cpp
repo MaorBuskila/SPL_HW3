@@ -50,13 +50,14 @@ int main(int argc, char *argv[]) {
                 std::cout << "Disconnected. Exiting...\n" << std::endl;
                 break;
             }
+            cout<< answer <<endl;
 
             int len = answer.length();
             // A C string must end with a 0 char delimiter.  When we filled the answer buffer from the socket
             // we filled up to the \n char - we must makefile sure now that a 0 char is also present. So we truncate last character.
-            answer.resize(len - 1);
+//            answer.resize(len );
             std::cout << "Reply: " << answer << " " << len << " bytes " << std::endl << std::endl;
-            if (answer == "bye") {
+            if (answer == "ACK 3") {
                 std::cout << "Exiting...\n" << std::endl;
                 break;
             }
