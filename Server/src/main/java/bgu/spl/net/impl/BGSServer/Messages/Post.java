@@ -9,7 +9,7 @@ import java.util.Vector;
 public class Post extends Message {
         private final short OPCODE = 5;
         private String content;
-        private Vector<String> additionalUsers;
+        private Vector<String> additionalUsers=new Vector<>();
 
     public Post(String content) {
         this.content = content;
@@ -24,18 +24,30 @@ public class Post extends Message {
         }
         else {
             //ACK Notification
+            ACK ackMessage=new ACK(OPCODE ,null);
+            connections.send(connectionId,ackMessage);
             user.post();
-           for(User tmpuser : user.getFollowers().values()){
-               tmpuser.addMessage(content);
+           for(User followerUser : user.getFollowers().values()){
+               database.addMessage(followerUser,content);
+               if(followerUser.isLoggedIn())
+               {
+                   Notification notiMessage=new Notification((byte)'1', user.getUsername(),content );
+                   connections.send(connectionId,notiMessage);
+               }
            }
             extractUsers(content);
-           if(!additionalUsers.containsAll(null)) {
+ //          if(!additionalUsers.containsAll(null)) {
                for (String additionalUser : additionalUsers) {
                    User additionalTmpUser = database.getRegisterUsers().get(database.getUserName_ConnectionID().get(additionalUser));
                    if (!user.getFollowers().contains(additionalTmpUser)) {
-                       additionalTmpUser.addMessage(content);
+                       database.addMessage(additionalTmpUser,content);
+                       if(additionalTmpUser.isLoggedIn())
+                       {
+                           Notification notiMessage=new Notification((byte)'1', user.getUsername(),content );
+                           connections.send(connectionId,notiMessage);
+                       }
                        //TODO notification
-                   }
+ //                  }
 
                }
            }

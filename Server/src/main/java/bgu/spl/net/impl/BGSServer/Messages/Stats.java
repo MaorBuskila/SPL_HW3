@@ -13,7 +13,7 @@ public class Stats extends Message{
 
     public Stats(String usernames)
     {
-        listOfUserNames=usernames.split("|");
+        listOfUserNames=usernames.split("\\|");
     }
 
     @Override

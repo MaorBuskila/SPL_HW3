@@ -1,5 +1,7 @@
 package bgu.spl.net.impl.BGSServer;
 
+import bgu.spl.net.impl.BGSServer.Messages.Notification;
+
 import java.sql.Timestamp;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -79,8 +81,9 @@ public class User {
 
     public void addMessage(String message) {
         try {
-            if (this.isLoggedIn())
-            messages.put(message);
+            if (this.isLoggedIn()) {
+                messages.put(message);
+            }
             else
                 unReadMessage.put(message);
         } catch (InterruptedException e) {
