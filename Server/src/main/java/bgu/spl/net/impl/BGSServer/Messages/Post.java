@@ -63,7 +63,7 @@ public class Post extends Message {
     public byte[] encode() {
         return new byte[0];
     }
-
+//
     public void extractUsers(String tmpContent, DB database) {
         while (tmpContent.contains("@")) {
             int tmp = tmpContent.indexOf("@");
