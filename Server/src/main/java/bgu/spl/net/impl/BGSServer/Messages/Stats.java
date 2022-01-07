@@ -18,31 +18,43 @@ public class Stats extends Message{
 
     @Override
     public void process(int connectionId, Connections connections, DB database) {
-        byte[][] bytes = new byte[4][2];
-//        User user = database.getRegisterUsers().get(connectionId);
-//        if (user == null || !user.isLoggedIn()) {
-//            Error errorMessage = new Error(OPCODE);
-//            connections.send(connectionId, errorMessage);
-//        } else {
-//            for (String tmpUserName : listOfUserNames) {
-//                int tmpUserNameID = database.getUserName_ConnectionID().get(tmpUserName);
-//                User listUser = database.getRegisterUsers().get(tmpUserNameID);
-//                if (listUser!=null) {
-//                    bytes[0] = shortToBytes(listUser.getAge());
-//                    bytes[1] = shortToBytes(listUser.getNumberOfPost());
-//                    bytes[2] = shortToBytes(listUser.getNumberOfFollowers());
-//                    bytes[3] = shortToBytes(listUser.getNumberOfFollowing());
-//                    ACK ackMessage = new ACK(OPCODE, bytes);
-//                    connections.send(connectionId, ackMessage);
-//                }
-//                else {
-//                    Error errorMessage = new Error(OPCODE);
-//                    connections.send(connectionId, errorMessage);
-//                    return;
-//                }
-//            }
-//        }
+        User user = database.getRegisterUsers().get(connectionId);
+        if (user == null || !user.isLoggedIn()) {
+            Error errorMessage = new Error(OPCODE);
+            connections.send(connectionId, errorMessage);
+        } else {
+            for (String tmpUserName : listOfUserNames) {
+                int tmpUserNameID = database.getUserName_ConnectionID().get(tmpUserName);
+                User listUser = database.getRegisterUsers().get(tmpUserNameID);
+                if (listUser != null) {
+                    short age = listUser.getAge();
+                    short numberofPost = listUser.getNumberOfPost();
+                    short numberOfFollowers = listUser.getNumberOfFollowers();
+                    short numbereOfFollowing = listUser.getNumberOfFollowing();
+                    byte[] byteArray = new byte[8];
+//                    byte[] tmpByteArray=new byte[2];
+//
+//                    tmpByteArray=shortToBytes(age);
+                    byteArray[0] = shortToBytes(age)[0];
+                    byteArray[1] = shortToBytes(age)[1];
+                    byteArray[2] = shortToBytes(numberofPost)[0];
+                    byteArray[3] = shortToBytes(numberofPost)[1];
+                    byteArray[4] = shortToBytes(numberOfFollowers)[0];
+                    byteArray[5] = shortToBytes(numberOfFollowers)[1];
+                    byteArray[6] = shortToBytes(numbereOfFollowing)[0];
+                    byteArray[7] = shortToBytes(numbereOfFollowing)[1];
+                    ACK ackMessage = new ACK(OPCODE, byteArray);
+//                    for(int i=0;i<byteArray.length;i++)
+//                        System.out.print(byteArray[i]+ " ");
+                    connections.send(connectionId, ackMessage);
+                } else {
+                    Error errorMessage = new Error(OPCODE);
+                    connections.send(connectionId, errorMessage);
+                    return;
+                }
 
+            }
+        }
     }
 
     @Override
