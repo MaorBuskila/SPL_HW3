@@ -229,7 +229,7 @@ short ConnectionHandler::bytesToShort(char *bytesArr) {
 
 
 bool ConnectionHandler::sendFrameAscii(const std::string &frame, char delimiter) {
-
+//
     vector<char> charVec;
     char opByteArray[2];
     string line = frame;
