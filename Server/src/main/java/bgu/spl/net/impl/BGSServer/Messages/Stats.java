@@ -16,10 +16,22 @@ public class Stats extends Message{
         listOfUserNames=usernames.split("\\|");
     }
 
+
+    private boolean anyOneInTheListBlockMe(User user,String[] listOfUserNames,DB database)
+    {
+        for (String tmpUserName : listOfUserNames) {
+            int tmpUserNameID = database.getUserName_ConnectionID().get(tmpUserName);
+            User tmpUser = database.getUser(tmpUserNameID);
+            if (user.isBlocked(tmpUser))
+                return true;
+        }
+        return false;
+    }
+
     @Override
     public void process(int connectionId, Connections connections, DB database) {
         User user = database.getRegisterUsers().get(connectionId);
-        if (user == null || !user.isLoggedIn()) {
+        if (user == null || !user.isLoggedIn()||!anyOneInTheListBlockMe(user,listOfUserNames,database)) {
             Error errorMessage = new Error(OPCODE);
             connections.send(connectionId, errorMessage);
         } else {

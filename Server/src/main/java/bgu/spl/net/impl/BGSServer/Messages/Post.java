@@ -7,12 +7,13 @@ import bgu.spl.net.impl.BGSServer.User;
 import java.util.Vector;
 
 public class Post extends Message {
-        private final short OPCODE = 5;
-        private String content;
-        private Vector<String> additionalUsers=new Vector<>();
+    private final short OPCODE = 5;
+    private String content;
+    private Vector<String> additionalUsers;
 
     public Post(String content) {
         this.content = content;
+        additionalUsers = new Vector<>();
     }
 
     @Override
@@ -21,36 +22,38 @@ public class Post extends Message {
         if (user == null || !user.isLoggedIn()) {
             Error errorMessage = new Error(OPCODE);
             connections.send(connectionId, errorMessage);
-        }
-        else {
+        } else {
             //ACK Notification
-            ACK ackMessage=new ACK(OPCODE ,null);
-            connections.send(connectionId,ackMessage);
+            ACK ackMessage = new ACK(OPCODE, null);
+            connections.send(connectionId, ackMessage);
             user.post();
-           for(User followerUser : user.getFollowers().values()){
-               database.addMessage(followerUser,content);
-               if(followerUser.isLoggedIn())
-               {
-                   Notification notiMessage=new Notification((byte)'1', user.getUsername(),content );
-                   connections.send(connectionId,notiMessage);
-               }
-           }
-            extractUsers(content);
- //          if(!additionalUsers.containsAll(null)) {
-               for (String additionalUser : additionalUsers) {
-                   User additionalTmpUser = database.getRegisterUsers().get(database.getUserName_ConnectionID().get(additionalUser));
-                   if (!user.getFollowers().contains(additionalTmpUser)) {
-                       database.addMessage(additionalTmpUser,content);
-                       if(additionalTmpUser.isLoggedIn())
-                       {
-                           Notification notiMessage=new Notification((byte)'1', user.getUsername(),content );
-                           connections.send(connectionId,notiMessage);
-                       }
-                       //TODO notification
- //                  }
+            Notification notiMessage = new Notification((byte) '1', user.getUsername(), content);
+            for (User followerUser : user.getFollowers().values()) {
+                database.addMessage(followerUser, content);
+                int followerUserID = database.getUserName_ConnectionID().get(followerUser.getUsername());
+                if (followerUser.isLoggedIn()) {
+                    connections.send(followerUserID, notiMessage);
+                } else {
+                    followerUser.addUnReadMessage(notiMessage);
+                }
+            }
+            extractUsers(content, database);
+            //          if(!additionalUsers.containsAll(null)) {
+            for (String additionalUser : additionalUsers) {
+                User additionalTmpUser = database.getRegisterUsers().get(database.getUserName_ConnectionID().get(additionalUser));
+                if (!user.getFollowers().contains(additionalTmpUser)) {
+                    database.addMessage(additionalTmpUser, content);
+                    if (!user.isBlocked(additionalTmpUser)) {
+                        if (additionalTmpUser.isLoggedIn()) {
+                            connections.send(connectionId, notiMessage);
+                        } else {
+                            additionalTmpUser.addUnReadMessage(notiMessage);
 
-               }
-           }
+                        }
+                    }
+
+                }
+            }
 
         }
 
@@ -61,11 +64,13 @@ public class Post extends Message {
         return new byte[0];
     }
 
-    public void extractUsers (String tmpContent){
-        while (tmpContent.contains("@")){
+    public void extractUsers(String tmpContent, DB database) {
+        while (tmpContent.contains("@")) {
             int tmp = tmpContent.indexOf("@");
-            additionalUsers.add(tmpContent.substring(tmp+1, tmpContent.indexOf(" " , tmp)));
-            tmpContent = tmpContent.substring(tmpContent.indexOf(" " , tmp));
+            String tmpUserName = tmpContent.substring(tmp + 1, tmpContent.indexOf(" ", tmp));
+            if (database.getUserName_ConnectionID().containsKey(tmpUserName)) ;
+            additionalUsers.add(tmpUserName);
+            tmpContent = tmpContent.substring(tmpContent.indexOf(" ", tmp));
         }
 
     }

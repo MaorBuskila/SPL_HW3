@@ -76,7 +76,7 @@ public class MessageEncoderDecoderImpl implements MessageEncoderDecoder<Message>
             case 5:
                 return new Post(arguments[0]);
             case 6:
-                return new PM(arguments[0], arguments[1], arguments[2]);
+                return new PM(arguments[0], arguments[1],arguments[2]);
             case 7:
                 return new Logstat();
             case 8:

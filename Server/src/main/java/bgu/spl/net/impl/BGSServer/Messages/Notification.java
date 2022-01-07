@@ -23,6 +23,10 @@ public class Notification extends Message{
     public void process(int connectionId, Connections connections, DB database) {
 
     }
+    public String getContent()
+    {
+        return content;
+    }
 
     public String toString()
     {
@@ -32,7 +36,7 @@ public class Notification extends Message{
     }
     public byte[] encode()
     {
-        byte[] byteArray=new byte[5+postingUser.length()+content.length()];
+        byte[] byteArray=new byte[6+postingUser.length()+content.length()];
         byte[] postUser=this.postingUser.getBytes(StandardCharsets.UTF_8);
         byte[] conTent=this.content.getBytes(StandardCharsets.UTF_8);
         byteArray[0]= MessageEncoderDecoderImpl.shortToBytes(OPCODE)[0];
@@ -49,9 +53,12 @@ public class Notification extends Message{
         {
             byteArray[k++]=conTent[j];
         }
-        byteArray[k]=0;
-//        return byteArray;
-        return (""+OPCODE+'0'+notificationType + '0' + postingUser + '0' + content + ';').getBytes(StandardCharsets.UTF_8);
+        byteArray[k++]=0;
+        byteArray[k]=';';
+        for(int i=0;i<byteArray.length;i++)
+            System.out.print(byteArray[i]+ " ");
+       return byteArray;
+       // return (""+OPCODE++notificationType + '0' + postingUser + '0' + content + ';').getBytes(StandardCharsets.UTF_8);
     }
 //    public static void main(String[] args)
 //    {

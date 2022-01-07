@@ -4,6 +4,8 @@ import bgu.spl.net.api.bidi.Connections;
 import bgu.spl.net.impl.BGSServer.DB;
 import bgu.spl.net.impl.BGSServer.User;
 
+import java.util.concurrent.BlockingQueue;
+
 public class Login extends Message {
 
     private final Short OPCODE = 2;
@@ -35,6 +37,11 @@ public class Login extends Message {
                 user.login();
                 ACK ackMessage = new ACK(OPCODE, null);
                 connections.send(connectionId , ackMessage);
+                 for(Notification notifMess :user.getUnReadMessage()){
+                     connections.send(connectionId,notifMess);
+                     user.getUnReadMessage().remove(notifMess);
+                     user.addMessage(notifMess.getContent());
+                 }
             }
         //TODO notification
     }

@@ -22,12 +22,8 @@ public class Logstat extends Message {
             connections.send(connectionId, errorMessage);
         } else {
             for (User tmpUser : database.getRegisterUsers().values()) {
-                if (tmpUser.isLoggedIn()) {
-                  //  bytes[0] = shortToBytes(user.getAge())[0];
-                    //bytes[1] = shortToBytes(user.getAge())[1];
-                    //bytes[1] = shortToBytes(user.getNumberOfPost());
-                    //bytes[2] = shortToBytes(user.getNumberOfFollowers());
-                    //bytes[3] = shortToBytes(user.getNumberOfFollowing());
+                if (tmpUser.isLoggedIn() && !user.isBlocked(tmpUser)) {
+
                     short age=tmpUser.getAge();
                     short numberofPost=tmpUser.getNumberOfPost();
                     short numberOfFollowers=tmpUser.getNumberOfFollowers();

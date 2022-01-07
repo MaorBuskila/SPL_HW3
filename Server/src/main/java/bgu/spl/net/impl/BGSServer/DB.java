@@ -34,27 +34,35 @@ public class DB {
 
     public boolean follow(int userId, String followUserName) {
 //        check if the user exist
-        if (userName_ConnectionID.containsKey(followUserName)) {
-            int toFollowID = userName_ConnectionID.get(followUserName);
-            //check that he is logged in && not already follow him
-            if (registerUsers.containsKey(userId) && registerUsers.get(userId).isLoggedIn() && !registerUsers.get(userId).getFollowing().containsKey(toFollowID)) {
-                registerUsers.get(userId).addFollowing(userId, registerUsers.get(toFollowID)); //add following
-                registerUsers.get(toFollowID).addFollower(userId, registerUsers.get(userId)); //add follower
-                return true;
+        User user=registerUsers.get(userId); // user need to unfollow
+        User userToFollow=registerUsers.get(userName_ConnectionID.get(followUserName));
+        if(user!=null && user.isLoggedIn() ) {
+            if (userToFollow!=null && !user.isBlocked(userToFollow)) {
+                //check that he is logged in && already follow him
+                if (!user.getFollowing().contains(userToFollow)) {
+                    int followID = userName_ConnectionID.get(followUserName);
+                    user.addFollowing(followID,userToFollow);
+                    userToFollow.addFollower(userId,user);
+                    return true;
+                }
             }
         }
         return false;
     }
 
-    public boolean unfollow(int userId, String followUserName) {
+    public boolean unfollow(int userId, String followUserName) {// userId need to unfollow after followuserName
 //        check if the user exist
-        if (userName_ConnectionID.containsKey(followUserName)) {
-            int followID = userName_ConnectionID.get(followUserName);
-            //check that he is logged in && already follow him
-            if (registerUsers.containsKey(userId)  && registerUsers.get(userId).isLoggedIn() && !registerUsers.get(userId).getFollowing().contains(followID)) {
-                registerUsers.get(userId).removeFollowing(followID, registerUsers.get(followID)); //remove following
-                registerUsers.get(followID).removeFollower(userId, registerUsers.get(userId)); //remove follower
-                return true;
+        User user=registerUsers.get(userId); // user need to unfollow
+        User userToUnFollow=registerUsers.get(userName_ConnectionID.get(followUserName));
+        if(user!=null && user.isLoggedIn()) {
+            if (userToUnFollow!=null) {
+                //check that he is logged in && already follow him
+                if (user.getFollowing().contains(userToUnFollow)) {
+                    int followID = userName_ConnectionID.get(followUserName);
+                    user.removeFollowing(followID,userToUnFollow);
+                    userToUnFollow.removeFollower(userId,user);
+                    return true;
+                }
             }
         }
         return false;

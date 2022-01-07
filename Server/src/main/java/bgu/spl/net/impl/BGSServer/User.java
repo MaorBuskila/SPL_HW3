@@ -3,7 +3,6 @@ package bgu.spl.net.impl.BGSServer;
 import bgu.spl.net.impl.BGSServer.Messages.Notification;
 
 import java.sql.Timestamp;
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
@@ -29,7 +28,7 @@ public class User {
     private ConcurrentHashMap<User,Timestamp> timeLastMessageRecieved = new ConcurrentHashMap<>();
     private Vector<User> usersThatBlockMe;
     private BlockingQueue<String> messages;
-    private BlockingQueue<String> unReadMessage = new LinkedBlockingQueue<>();
+    private BlockingQueue<Notification> unReadMessage = new LinkedBlockingQueue<>();
 
     public User(String username, String password, Date birthday) {
         this.username = username;
@@ -38,6 +37,7 @@ public class User {
         this.followers = new ConcurrentHashMap<>();
         this.following = new ConcurrentHashMap<>();
         this.messages = new LinkedBlockingQueue();
+        this.usersThatBlockMe=new Vector<>();
     }
     public boolean isRegistered() {
         return isRegister;
@@ -79,16 +79,35 @@ public class User {
         followTime.remove(user,new Timestamp(System.currentTimeMillis()));
     }
 
+    public BlockingQueue<Notification> getUnReadMessage() {
+        return unReadMessage;
+    }
+    public void addUnReadMessage(Notification message)
+    {
+        unReadMessage.add(message);
+    }
+
+    public Vector<User> getUsersThatBlockMe() {
+        return usersThatBlockMe;
+    }
+
     public void addMessage(String message) {
         try {
             if (this.isLoggedIn()) {
                 messages.put(message);
             }
-            else
-                unReadMessage.put(message);
+
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+    public boolean isBlocked(User user1)
+    {
+        if(user1.getUsersThatBlockMe().contains(this) || this.getUsersThatBlockMe().contains(user1))
+        {
+            return true;
+        }
+        return false;
     }
 
     ///////////////Getters/////////////
@@ -121,7 +140,7 @@ public class User {
     {
         return (short)following.size();
     }
-    public void addBlockMe(User user)
+    public void addBlock(User user)
     {
         usersThatBlockMe.add(user);
     }

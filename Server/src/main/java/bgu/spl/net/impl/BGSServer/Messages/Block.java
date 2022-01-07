@@ -24,7 +24,7 @@ public class Block extends Message{
 
           //      unfollow each other
         int tmpConnectionID=database.getUserName_ConnectionID().get(this.username);
-         database.getUser(tmpConnectionID).addBlockMe(database.getUser(connectionId));//got Connection id
+         database.getUser(tmpConnectionID).addBlock(database.getUser(connectionId));//got Connection id
          database.unfollow(connectionId,this.username);
          database.unfollow(tmpConnectionID,database.getUser(connectionId).getUsername());
         }
