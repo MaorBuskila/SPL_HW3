@@ -1,5 +1,7 @@
 
 #include "../include/connectionHandler.h"
+#include <iostream>
+#include <ctime>
 
 using boost::asio::ip::tcp;
 
@@ -94,24 +96,27 @@ bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
             getBytes(&ch, 1);
             byte[1]=ch;
             // std::cout << opcode << std::endl;
-            short subject=bytesToShort(byte);
+            short msgOpCode=bytesToShort(byte);
             //std::cout << subject << std::endl;
             if(opcode==10){
-                if(subject==7||subject==8) {
-                    frame+="ACK "+std::to_string(subject)+" ";
-                    logStatOrStatDecode(frame, subject);
-                    return true;
+                if(msgOpCode==7||msgOpCode==8) {
+                    frame+="ACK "+std::to_string(msgOpCode)+" ";
+                    logStatOrStatDecode(frame, msgOpCode);
+                    //return true;
                 }
-                else
-                    frame+="ACK "+std::to_string(subject);
+                else {
+                    frame += "ACK " + std::to_string(msgOpCode);
+                    //return true;
+                }
             }
             if(opcode==11)
-                frame+="ERROR "+std::to_string(subject);
+                frame+="ERROR "+std::to_string(msgOpCode);
 //            if(delimiter != ch)
 //                frame+=" ";
         }
         if(opcode==9){
             frame+="NOTIFICATION ";
+            notificationDecode(frame);
         }
         if(opcode==12)
             frame+="BLOCK ";
@@ -127,9 +132,38 @@ bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
 }
 
 
+void ConnectionHandler :: notificationDecode(std::string& msg){
+    char* byte= new char[2];
+    char ch;
+    getBytes(&ch, 1);
+    if(ch=='1')
+    {
+     msg+="Public ";
+    }
+    else
+    {
+       msg+="PM " ;
+    }
+    //09 01"\0"971054343"\0"
+    //gettingUserName
+    getBytes(&ch, 1);
+    while(ch!='\0')
+    {
+        msg.append(1,ch);
+        getBytes(&ch, 1);
+    }
+    msg.append(1,' ');
+    getBytes(&ch, 1);
+    while(ch!='\0')
+    {
+        msg.append(1,ch);
+        getBytes(&ch, 1);
+    }
 
 
-void ConnectionHandler::logStatOrStatDecode(std::string& msg,short subject) {
+}
+
+void ConnectionHandler::logStatOrStatDecode(std::string& msg,short subject) { //TODO check if need to delete Subject
     char* byte= new char[2];
     char ch;
     //bool enter= true;
@@ -199,6 +233,7 @@ bool ConnectionHandler::sendFrameAscii(const std::string &frame, char delimiter)
     vector<char> charVec;
     char opByteArray[2];
     string line = frame;
+    string postLine=line;
     vector<string> args = split(line,' ');
     string type = args[0];
     if (type == "REGISTER") {
@@ -273,10 +308,9 @@ bool ConnectionHandler::sendFrameAscii(const std::string &frame, char delimiter)
         shortToBytes(OPCODE, opByteArray);
         charVec.push_back(*opByteArray);
         charVec.push_back(*(opByteArray + 1));
-        string content = args[1];
-        for (char c: content) {
-            charVec.push_back(c);
-        }
+        string content=postLine.substr(5,postLine.size()-1);
+        for(char ch : content)
+                charVec.push_back(ch);
         charVec.push_back('\0');
 
 
@@ -291,16 +325,25 @@ bool ConnectionHandler::sendFrameAscii(const std::string &frame, char delimiter)
             charVec.push_back(c);
         }
         charVec.push_back('\0');
-        string content = args[2];
-        for (char c: content) {
+        // 2+1+userName.length+1
+        string content=postLine.substr(4+userName.length(),postLine.size()-1);
+        for(char ch : content)
+            charVec.push_back(ch);
+        charVec.push_back('\0');
+        time_t rawtime;
+        struct tm * timeinfo;
+        char buffer[17];
+
+        time (&rawtime);
+        timeinfo = localtime(&rawtime);
+
+        strftime(buffer,sizeof(buffer),"%d-%m-%Y %H:%M",timeinfo);
+        std::string str(buffer);
+        for (char c : buffer )
+        {
             charVec.push_back(c);
         }
-        charVec.push_back('\0');
-        string date = args[3];
-        for (char c: content) {
-            charVec.push_back(c);
-        }
-        charVec.push_back('\0');
+
     }
 
     if(type=="LOGSTAT")

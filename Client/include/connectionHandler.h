@@ -52,7 +52,7 @@ public:
     void close();
 
     short opcodeFinder(vector<char> &bytesVec);
-
+    void  notificationDecode(std::string& msg);
     short bytesToShort(char *bytesArr);
     void logStatOrStatDecode(std::string& frame,short subject);
 //    vector<string> split(string &frame, string delimiter);
