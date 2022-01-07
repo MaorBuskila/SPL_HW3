@@ -41,11 +41,12 @@ public class Post extends Message {
             //          if(!additionalUsers.containsAll(null)) {
             for (String additionalUser : additionalUsers) {
                 User additionalTmpUser = database.getRegisterUsers().get(database.getUserName_ConnectionID().get(additionalUser));
+                int additionalTmpUserID = database.getUserName_ConnectionID().get(additionalUser);
                 if (!user.getFollowers().contains(additionalTmpUser)) {
                     database.addMessage(additionalTmpUser, content);
                     if (!user.isBlocked(additionalTmpUser)) {
                         if (additionalTmpUser.isLoggedIn()) {
-                            connections.send(connectionId, notiMessage);
+                            connections.send(additionalTmpUserID, notiMessage);
                         } else {
                             additionalTmpUser.addUnReadMessage(notiMessage);
 

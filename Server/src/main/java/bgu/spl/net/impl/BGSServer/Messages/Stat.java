@@ -7,11 +7,11 @@ import bgu.spl.net.impl.BGSServer.User;
 import static bgu.spl.net.impl.BGSServer.MessageEncoderDecoderImpl.shortToBytes;
 
 
-public class Stats extends Message{
+public class Stat extends Message{
     private final short OPCODE = 8;
     private String[] listOfUserNames;
 
-    public Stats(String usernames)
+    public Stat(String usernames)
     {
         listOfUserNames=usernames.split("\\|");
     }
@@ -31,7 +31,7 @@ public class Stats extends Message{
     @Override
     public void process(int connectionId, Connections connections, DB database) {
         User user = database.getRegisterUsers().get(connectionId);
-        if (user == null || !user.isLoggedIn()||!anyOneInTheListBlockMe(user,listOfUserNames,database)) {
+        if (user == null || !user.isLoggedIn()|| anyOneInTheListBlockMe(user,listOfUserNames,database)) {
             Error errorMessage = new Error(OPCODE);
             connections.send(connectionId, errorMessage);
         } else {

@@ -27,6 +27,8 @@ public class Block extends Message{
          database.getUser(tmpConnectionID).addBlock(database.getUser(connectionId));//got Connection id
          database.unfollow(connectionId,this.username);
          database.unfollow(tmpConnectionID,database.getUser(connectionId).getUsername());
+         ACK ackMessage = new ACK(OPCODE, null);
+         connections.send(connectionId , ackMessage);
         }
 
     }

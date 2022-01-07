@@ -4,7 +4,6 @@ import bgu.spl.net.api.MessageEncoderDecoder;
 import bgu.spl.net.impl.BGSServer.Messages.*;
 
 import java.io.UnsupportedEncodingException;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
@@ -80,7 +79,7 @@ public class MessageEncoderDecoderImpl implements MessageEncoderDecoder<Message>
             case 7:
                 return new Logstat();
             case 8:
-                return new Stats(arguments[0]);
+                return new Stat(arguments[0]);
             case 12:
                 return new Block(arguments[0]);
 
