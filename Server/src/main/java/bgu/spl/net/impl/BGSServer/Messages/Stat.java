@@ -44,9 +44,6 @@ public class Stat extends Message{
                     short numberOfFollowers = listUser.getNumberOfFollowers();
                     short numbereOfFollowing = listUser.getNumberOfFollowing();
                     byte[] byteArray = new byte[8];
-//                    byte[] tmpByteArray=new byte[2];
-//
-//                    tmpByteArray=shortToBytes(age);
                     byteArray[0] = shortToBytes(age)[0];
                     byteArray[1] = shortToBytes(age)[1];
                     byteArray[2] = shortToBytes(numberofPost)[0];

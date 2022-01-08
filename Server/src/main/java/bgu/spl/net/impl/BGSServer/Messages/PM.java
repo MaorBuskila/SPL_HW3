@@ -22,7 +22,7 @@ public class PM extends Message {
         if(user==null ||
                 !user.isLoggedIn() || //check if user is not logged in
                 tmpUser==null|| //check if registers list not conteain the connection ID
-                !user.getFollowing().containsKey(tmpUser) //check if the user is not follow the reciepient user
+                !user.getFollowing().contains(tmpUser) //check if the user is not follow the reciepient user
                 || user.isBlocked(tmpUser))
         {
 
@@ -37,21 +37,15 @@ public class PM extends Message {
                 filteredMessage.replaceAll(s,"<filtered>");
             }
             database.addMessage(database.getUser(database.getUserName_ConnectionID().get(username)), filteredMessage);
-
-//TODO: didnt do something with Time' impliement this with queue when he is not log in.
-
-
             ACK ackMessage = new ACK(OPCODE,null);
             connections.send(connectionId , ackMessage);
             Notification notificationMessage = new Notification((byte)0,database.getUser(connectionId).getUsername(),this.content+" "+this.dateAndTime);
             int tmpUserNameID = database.getUserName_ConnectionID().get(this.username);
             User getTheMessageUser= database.getUser(tmpUserNameID);
-            if(getTheMessageUser.isLoggedIn())
-            {
+            if(getTheMessageUser.isLoggedIn()) {
                 connections.send(tmpUserNameID,notificationMessage);
             }
-            else
-            {
+            else {
                 getTheMessageUser.addUnReadMessage(notificationMessage);
             }
 

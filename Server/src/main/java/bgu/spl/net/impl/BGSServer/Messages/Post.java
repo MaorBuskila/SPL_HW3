@@ -23,7 +23,6 @@ public class Post extends Message {
             Error errorMessage = new Error(OPCODE);
             connections.send(connectionId, errorMessage);
         } else {
-            //ACK Notification
             ACK ackMessage = new ACK(OPCODE, null);
             connections.send(connectionId, ackMessage);
             user.post();
@@ -38,7 +37,6 @@ public class Post extends Message {
                 }
             }
             extractUsers(content, database);
-            //          if(!additionalUsers.containsAll(null)) {
             for (String additionalUser : additionalUsers) {
                 User additionalTmpUser = database.getRegisterUsers().get(database.getUserName_ConnectionID().get(additionalUser));
                 int additionalTmpUserID = database.getUserName_ConnectionID().get(additionalUser);
@@ -52,7 +50,6 @@ public class Post extends Message {
 
                         }
                     }
-
                 }
             }
 
@@ -64,7 +61,7 @@ public class Post extends Message {
     public byte[] encode() {
         return new byte[0];
     }
-//
+
     public void extractUsers(String tmpContent, DB database) {
         while (tmpContent.contains("@")) {
             int tmp = tmpContent.indexOf("@");

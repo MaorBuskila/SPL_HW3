@@ -6,9 +6,9 @@ import bgu.spl.net.impl.BGSServer.DB;
 import java.nio.charset.StandardCharsets;
 
 public class Follow extends Message {
+    private final short OPCODE = 4;
     private String followOrUn;
     private String username;
-    private final short OPCODE = 4;
 
     public Follow(String followOrUn, String username) {
         this.followOrUn = followOrUn;

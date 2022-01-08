@@ -9,9 +9,7 @@ public class Block extends Message{
     private String username;
     public Block(String username) {
         this.username=username;
-
     }
-
     @Override
     public void process(int connectionId, Connections connections, DB database) {
         User user =  database.getRegisterUsers().get(connectionId);
@@ -21,8 +19,7 @@ public class Block extends Message{
         }
         else
         {
-
-          //      unfollow each other
+            //unfollow each other
         int tmpConnectionID=database.getUserName_ConnectionID().get(this.username);
          database.getUser(tmpConnectionID).addBlock(database.getUser(connectionId));//got Connection id
          database.unfollow(connectionId,this.username);

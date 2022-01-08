@@ -144,8 +144,6 @@ void ConnectionHandler :: notificationDecode(std::string& msg){
     {
        msg+="PM " ;
     }
-    //09 01"\0"971054343"\0"
-    //gettingUserName
     getBytes(&ch, 1);
     while(ch!='\0')
     {
@@ -353,7 +351,7 @@ bool ConnectionHandler::sendFrameAscii(const std::string &frame, char delimiter)
         charVec.push_back(*opByteArray);
         charVec.push_back(*(opByteArray+1));
     }
-    if(type=="STATS")
+    if(type=="STAT")
     {
         short OPCODE=8;
         shortToBytes(OPCODE,opByteArray);
@@ -374,14 +372,13 @@ bool ConnectionHandler::sendFrameAscii(const std::string &frame, char delimiter)
 
 
     if (type == "BLOCK") {
-        short OPCODE = 9;
+        short OPCODE = 12;
         shortToBytes(OPCODE, opByteArray);
         charVec.push_back(*opByteArray);
         charVec.push_back(*(opByteArray + 1));
         string username = args[1];
         for (char c: username) {
             charVec.push_back(c);
-//            wantedLength++;
         }
         charVec.push_back('\0');
     }
@@ -398,6 +395,7 @@ bool ConnectionHandler::sendFrameAscii(const std::string &frame, char delimiter)
 }
 
 // Close down the connection properly.
+
 void ConnectionHandler::close() {
     try {
 

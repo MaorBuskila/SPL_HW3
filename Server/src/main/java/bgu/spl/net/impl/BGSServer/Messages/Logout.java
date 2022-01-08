@@ -12,7 +12,7 @@ public class Logout extends Message {
         if (database.getRegisterUsers().get(connectionId).isLoggedIn()){
             database.getRegisterUsers().get(connectionId).logout();
             connections.disconnect(connectionId);
-            //send ACK TODO:Implement in client!! after he get the ack he shoulde be terminated
+            //send ACK
             ACK ackMessage = new ACK(OPCODE, null);
             connections.send(connectionId , ackMessage);
         }
