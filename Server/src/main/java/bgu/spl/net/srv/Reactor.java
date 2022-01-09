@@ -27,13 +27,13 @@ public class Reactor<T> implements Server<T> {
     private final ConcurrentLinkedQueue<Runnable> selectorTasks = new ConcurrentLinkedQueue<>();
     private ConnectionsImpl<T> connection;
     public Reactor(
-            int numThreads,
             int port,
+            int numThreads,
             Supplier<BidiMessagingProtocol<T>> protocolFactory,
             Supplier<MessageEncoderDecoder<T>> readerFactory) {
             connection=new ConnectionsImpl<>();
-            this.pool = new ActorThreadPool(numThreads);
             this.port = port;
+            this.pool = new ActorThreadPool(numThreads);
             this.protocolFactory = protocolFactory;
             this.readerFactory = readerFactory;
     }

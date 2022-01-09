@@ -48,8 +48,9 @@ public class User {
     public void login(){
         isLogIn =true;
     }
-    public void logout(){
+    public void logout(DB databse, int connectionId){
         isLogIn =false;
+        databse.getLoggedInUser().remove(connectionId);
     }
     public void register()
     {
