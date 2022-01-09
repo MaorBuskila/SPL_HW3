@@ -63,13 +63,24 @@ public class Post extends Message {
     }
 
     public void extractUsers(String tmpContent, DB database) {
+        String tmpUserName;
         while (tmpContent.contains("@")) {
             int tmp = tmpContent.indexOf("@");
-            String tmpUserName = tmpContent.substring(tmp + 1, tmpContent.indexOf(" ", tmp));
-            if (database.getUserName_ConnectionID().containsKey(tmpUserName)) ;
-            additionalUsers.add(tmpUserName);
-            tmpContent = tmpContent.substring(tmpContent.indexOf(" ", tmp));
-        }
+            if(tmpContent.indexOf(" ",tmp)!=-1) {
+                tmpUserName = tmpContent.substring(tmp + 1, tmpContent.indexOf(" ", tmp));
+            }
+            else
+            {
+                tmpUserName=tmpContent.substring(tmp+1,tmpContent.length());
+            }
+            if (database.getUserName_ConnectionID().containsKey(tmpUserName)) {
+                  additionalUsers.add(tmpUserName);
+            }
+            if(tmpContent.indexOf(" ",tmp)!=-1)
+                tmpContent = tmpContent.substring(tmpContent.indexOf(" ", tmp)+1);
+            else
+                break;
+
 
     }
-}
+} }

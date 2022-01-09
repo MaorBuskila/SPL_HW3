@@ -37,8 +37,6 @@ int main(int argc, char *argv[]) {
             }
             std::string line(buf);
             bool send  = connectionHandler.sendLine(line); //appends '\n' to the message. Therefor we send len+1 bytes.
-            int len = line.length();
-            std::cout << "Sent: " << line << " , " << len + 1 << " bytes to server" << std::endl;
             if(line == "LOGOUT")   sleep(1);
             if (!send) {
                 std::cout << "Write thread shutdown.\n" << std::endl;

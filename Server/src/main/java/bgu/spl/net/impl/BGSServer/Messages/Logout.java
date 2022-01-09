@@ -11,7 +11,7 @@ public class Logout extends Message {
     public void process(int connectionId, Connections connections, DB database) {
         User user =  database.getLoggedInUser().get(connectionId);
         if (user != null && user.isLoggedIn()){
-            database.getLoggedInUser().get(connectionId).logout();
+            user.logout(database , connectionId);
             connections.disconnect(connectionId);
             //send ACK
             ACK ackMessage = new ACK(OPCODE, null);
