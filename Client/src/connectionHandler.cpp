@@ -125,9 +125,12 @@ bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
         }while (delimiter != ch);
     } catch (std::exception& e) {
         std::cerr << "recv failed (Error: " << e.what() << ')' << std::endl;
+        delete[] byte;
         return false;
     }
+    delete[] byte;
     return true;
+
 }
 
 
@@ -183,7 +186,8 @@ void ConnectionHandler::logStatOrStatDecode(std::string& msg,short subject) { //
         byte[1]=ch;
         short numfollowing=bytesToShort(byte);
         msg+=std::to_string(age)+" "+std::to_string(numPost)+" "+std::to_string(numfollowers)+" "+std::to_string(numfollowing);
-    }
+        delete[] byte;
+}
 
 
 vector<string> ConnectionHandler::split(string &frame,char delimiter) {

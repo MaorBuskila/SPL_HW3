@@ -21,7 +21,7 @@ public class Login extends Message {
 
     @Override
     public void process(int connectionId, Connections connections, DB database) {
-        User user =  database.getRegisterUsers().get(connectionId);
+        User user =  database.getRegisterUsers().get(database.getUserName_ConnectionID().get(this.username));
             //Check if the user Exist if not Error
             //check if password are right if not Error
             //check if he is already logged in

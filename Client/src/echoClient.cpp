@@ -3,28 +3,12 @@
 #include "../include/connectionHandler.h"
 
 using namespace std;
+//valgrind --leak-check=full --show-reachable=yes ./BGSclient 127.0.0.1 7777
 
 /**
 * This code assumes that the server replies the exact text the client sent it (as opposed to the practical session example)
 */
 
-//thread write_thread([](ConnectionHandler* connectionHandler , std::atomic<bool> logout_flag) {
-//    while (1) {
-//        const short bufsize = 1024;
-//        char buf[bufsize];
-//        std::cin.getline(buf, bufsize);
-//        std::string line(buf);
-//        std::cout << "imhehre" << std::endl;
-//        bool send  = connectionHandler->sendLine(line); //appends '\n' to the message. Therefor we send len+1 bytes.
-//        int len = line.length();
-//        std::cout << "Sent: " << line << " , " << len + 1 << " bytes to server" << std::endl;
-//        if (!send) {
-//            std::cout << "Write thread shutdown.\n" << std::endl;
-//            connectionHandler->close();
-//            break;
-//        }
-//    }
-//};,logout_flag);
 
 int main(int argc, char *argv[]) {
     if (argc < 3) {
@@ -40,38 +24,7 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-//
-//
-//    auto f = [](ConnectionHandler* CH ,std::atomic<bool> logout_flag ) {
-//        while (!logout_flag) {
-//            const short bufsize = 1024;
-//            char buf[bufsize];
-//            std::cin.getline(buf, bufsize);
-//            std::string line(buf);
-//            std::cout << "imhehre" << std::endl;
-//            bool send  = CH->sendLine(line); //appends '\n' to the message. Therefor we send len+1 bytes.
-//            int len = line.length();
-//            std::cout << "Sent: " << line << " , " << len + 1 << " bytes to server" << std::endl;
-//            if (!send) {
-//                std::cout << "Write thread shutdown.\n" << std::endl;
-//                CH->close();
-//                break;
-//            }
-//        }
-//    };
 
-// Pass f and its parameters to thread
-// object constructor as
-
-
-
-
-
-
-
-
-
-//valgrind --leak-check=full --show-reachable=yes ./BGSclient 127.0.0.1 7777
 
     thread write_thread([&connectionHandler, &logout_flag]() {
         while (1) {
