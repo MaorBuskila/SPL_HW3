@@ -17,11 +17,11 @@ public class PM extends Message {
 
     @Override
     public void process(int connectionId, Connections connections, DB database) {
-        User user =database.getRegisterUsers().get(connectionId);
+        User user =database.getLoggedInUser().get(connectionId);
         int tmpUserId = database.getUserName_ConnectionID().get(this.username);
-        User tmpUser=database.getRegisterUsers().get(tmpUserId);
+        User tmpUser=database.getRegisterUsers().get(this.username);// check
         if(user==null ||
-            !user.isLoggedIn() || //check if user is not logged in
+             //check if user is not logged in
             tmpUser==null|| //check if registers list not conteain the connection ID
             !user.getFollowing().contains(tmpUser) //check if the user is not follow the reciepient user
             || user.isBlocked(tmpUser))
@@ -33,16 +33,15 @@ public class PM extends Message {
         }
         else {
             String filteredMessage=this.content;
-            for(String s: database.getForbiddenWords())
-            {
-                filteredMessage.replaceAll(s,"<filtered>");
+            for(String s: database.getForbiddenWords()) {
+                filteredMessage=  filteredMessage.replaceAll(s,"<filtered>");
             }
-            database.addMessage(database.getUser(database.getUserName_ConnectionID().get(username)), filteredMessage);
+            database.addMessage(database.getRegisterUsers().get(this.username), filteredMessage);
             ACK ackMessage = new ACK(OPCODE,null);
             connections.send(connectionId , ackMessage);
-            Notification notificationMessage = new Notification((byte)0,database.getUser(connectionId).getUsername(),this.content+" "+this.dateAndTime);
+            Notification notificationMessage = new Notification((byte)0,user.getUsername(),filteredMessage+" "+this.dateAndTime);
             int tmpUserNameID = database.getUserName_ConnectionID().get(this.username);
-            User getTheMessageUser= database.getUser(tmpUserNameID);
+            User getTheMessageUser= database.getRegisterUsers().get(this.username);
             if(getTheMessageUser.isLoggedIn()) {
                 connections.send(tmpUserNameID,notificationMessage);
             }

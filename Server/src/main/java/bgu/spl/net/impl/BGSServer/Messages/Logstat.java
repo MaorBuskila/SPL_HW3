@@ -14,12 +14,12 @@ public class Logstat extends Message {
     @Override
     public void process(int connectionId, Connections connections, DB database) {
         String tmp = "";
-        User user = database.getRegisterUsers().get(connectionId);
+        User user = database.getLoggedInUser().get(connectionId);
         if (user == null || !user.isLoggedIn()) {
             Error errorMessage = new Error(OPCODE);
             connections.send(connectionId, errorMessage);
         } else {
-            for (User tmpUser : database.getRegisterUsers().values()) {
+            for (User tmpUser : database.getLoggedInUser().values()) {
                 if (tmpUser.isLoggedIn() && !user.isBlocked(tmpUser)) { //TODO: check why not work
                     short age = tmpUser.getAge();
                     short numberofPost = tmpUser.getNumberOfPost();

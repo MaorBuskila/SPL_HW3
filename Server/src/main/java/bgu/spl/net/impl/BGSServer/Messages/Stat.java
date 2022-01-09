@@ -27,17 +27,26 @@ public class Stat extends Message{
         }
         return false;
     }
+    private boolean anyOneIsRegistered(String[] usernames,DB database)
+    {
+        for(String username : usernames)
+        {
+            if(!database.getRegisterUsers().containsKey(username))
+                return false;
+        }
+        return true;
+    }
 
     @Override
     public void process(int connectionId, Connections connections, DB database) {
-        User user = database.getRegisterUsers().get(connectionId);
-        if (user == null || !user.isLoggedIn()|| anyOneInTheListBlockMe(user,listOfUserNames,database)) {
+        User user = database.getLoggedInUser().get(connectionId);
+        if (user == null || !user.isLoggedIn()|| anyOneInTheListBlockMe(user,listOfUserNames,database) ||!anyOneIsRegistered(listOfUserNames,database)) {
             Error errorMessage = new Error(OPCODE);
             connections.send(connectionId, errorMessage);
         } else {
             for (String tmpUserName : listOfUserNames) {
                 int tmpUserNameID = database.getUserName_ConnectionID().get(tmpUserName);
-                User listUser = database.getRegisterUsers().get(tmpUserNameID);
+                User listUser = database.getRegisterUsers().get(tmpUserName);
                 if (listUser != null) {
                     short age = listUser.getAge();
                     short numberofPost = listUser.getNumberOfPost();

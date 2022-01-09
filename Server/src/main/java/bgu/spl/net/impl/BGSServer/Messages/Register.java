@@ -31,7 +31,7 @@ public class Register extends Message{
     public void process(int connectionId, Connections connections, DB database) {
         if (!database.getUserName_ConnectionID().containsKey(this.username)) {
             User user = new User(username, password, birthday);
-            database.registerClient(connectionId, user);
+            database.registerClient(connectionId, user ,this.username);
             ACK ackMessage = new ACK(OPCODE, null);
             connections.send(connectionId , ackMessage);
         }

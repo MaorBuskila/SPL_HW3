@@ -18,8 +18,8 @@ public class Post extends Message {
 
     @Override
     public void process(int connectionId, Connections connections, DB database) {
-        User user = database.getRegisterUsers().get(connectionId);
-        if (user == null || !user.isLoggedIn()) {
+        User user = database.getLoggedInUser().get(connectionId);
+        if (user == null ) {
             Error errorMessage = new Error(OPCODE);
             connections.send(connectionId, errorMessage);
         } else {
@@ -38,7 +38,7 @@ public class Post extends Message {
             }
             extractUsers(content, database);
             for (String additionalUser : additionalUsers) {
-                User additionalTmpUser = database.getRegisterUsers().get(database.getUserName_ConnectionID().get(additionalUser));
+                User additionalTmpUser = database.getRegisterUsers().get(additionalUser);
                 int additionalTmpUserID = database.getUserName_ConnectionID().get(additionalUser);
                 if (!user.getFollowers().contains(additionalTmpUser)) {
                     database.addMessage(additionalTmpUser, content);

@@ -9,9 +9,9 @@ public class Logout extends Message {
     private  final short OPCODE = 3;
     @Override
     public void process(int connectionId, Connections connections, DB database) {
-        User user =  database.getRegisterUsers().get(connectionId);
+        User user =  database.getLoggedInUser().get(connectionId);
         if (user != null && user.isLoggedIn()){
-            database.getRegisterUsers().get(connectionId).logout();
+            database.getLoggedInUser().get(connectionId).logout();
             connections.disconnect(connectionId);
             //send ACK
             ACK ackMessage = new ACK(OPCODE, null);

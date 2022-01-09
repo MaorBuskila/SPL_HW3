@@ -5,7 +5,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class DB {
 
-    private ConcurrentHashMap<Integer, User> registerUsers = new ConcurrentHashMap();
+
+    private ConcurrentHashMap<String, User> registerUsers = new ConcurrentHashMap();
+    private ConcurrentHashMap<Integer, User> loggedInUser = new ConcurrentHashMap();
     private ConcurrentHashMap<String, Integer> userName_ConnectionID = new ConcurrentHashMap();
     private Vector<String> pmAndPostMessages=new Vector<>();
     private String[] forbiddenWords=new String[]{"Nir","Trump","Maor" } ;
@@ -20,8 +22,8 @@ public class DB {
     }
 
 
-    public void registerClient(int connectionId, User user) {
-        registerUsers.put(connectionId, user);
+    public void registerClient(int connectionId, User user, String username) {
+        registerUsers.put(username, user);
         userName_ConnectionID.put(user.getUsername(), connectionId);
         user.register();
 
@@ -34,8 +36,8 @@ public class DB {
 
     public boolean follow(int userId, String followUserName) {
 //        check if the user exist
-        User user=registerUsers.get(userId); // user need to unfollow
-        User userToFollow=registerUsers.get(userName_ConnectionID.get(followUserName));
+        User user=loggedInUser.get(userId); // user need to unfollow
+        User userToFollow=registerUsers.get(followUserName);
         if(user!=null && user.isLoggedIn() ) {
             if (userToFollow!=null && !user.isBlocked(userToFollow)) {
                 //check that he is logged in && already follow him
@@ -52,8 +54,8 @@ public class DB {
 
     public boolean unfollow(int userId, String followUserName) {// userId need to unfollow after followuserName
 //        check if the user exist
-        User user=registerUsers.get(userId); // user need to unfollow
-        User userToUnFollow=registerUsers.get(userName_ConnectionID.get(followUserName));
+        User user=loggedInUser.get(userId); // user need to unfollow
+        User userToUnFollow=registerUsers.get(followUserName);
         if(user!=null && user.isLoggedIn()) {
             if (userToUnFollow!=null) {
                 //check that he is logged in && already follow him
@@ -70,7 +72,7 @@ public class DB {
 
 
 
-    public ConcurrentHashMap<Integer, User> getRegisterUsers() {
+    public ConcurrentHashMap<String, User> getRegisterUsers() {
         return registerUsers;
     }
 
@@ -81,11 +83,7 @@ public class DB {
     public ConcurrentHashMap<String, Integer> getUserName_ConnectionID() {
         return userName_ConnectionID;
     }
-
-    public User getUser(int connectionId)
-    {
-        return registerUsers.get(connectionId);
-    }
+    
     public boolean isRegistered(int connectionId)
     {
         return registerUsers.containsKey(connectionId);
@@ -98,4 +96,11 @@ public class DB {
         return bytesArr;
     }
 
+    public ConcurrentHashMap<Integer, User> getLoggedInUser() {
+        return loggedInUser;
+    }
+
+    public void addLogInUser(int connectionId, User user) {
+        loggedInUser.put(connectionId, user);
+    }
 }

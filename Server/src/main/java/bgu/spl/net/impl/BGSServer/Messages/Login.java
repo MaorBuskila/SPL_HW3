@@ -21,16 +21,17 @@ public class Login extends Message {
 
     @Override
     public void process(int connectionId, Connections connections, DB database) {
-        User user =  database.getRegisterUsers().get(database.getUserName_ConnectionID().get(this.username));
+        User user =  database.getRegisterUsers().get(this.username); // check
             //Check if the user Exist if not Error
             //check if password are right if not Error
             //check if he is already logged in
-            if (user == null ||!user.getUsername().equals(username)|| !user.getPassword().equals(password) || captcha.equals("0") || user.isLoggedIn()) {
+            if (user == null || database.getLoggedInUser().containsKey(connectionId) ||!user.getUsername().equals(username)|| !user.getPassword().equals(password) || captcha.equals("0") || user.isLoggedIn()) {
                 Error errorMessage = new Error(OPCODE);
                 connections.send(connectionId , errorMessage);
             }
              else {
                 user.login();
+                database.addLogInUser(connectionId, user);
                 ACK ackMessage = new ACK(OPCODE, null);
                 connections.send(connectionId , ackMessage);
                  for(Notification notifMess :user.getUnReadMessage()){

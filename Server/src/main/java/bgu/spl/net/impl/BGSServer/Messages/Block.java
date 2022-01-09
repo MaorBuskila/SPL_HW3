@@ -12,7 +12,7 @@ public class Block extends Message{
     }
     @Override
     public void process(int connectionId, Connections connections, DB database) {
-        User user =  database.getRegisterUsers().get(connectionId);
+        User user =  database.getLoggedInUser().get(connectionId);
         if(user==null || !database.getUserName_ConnectionID().containsKey(this.username)) {
             Error errorMessage=new Error(OPCODE);
             connections.send(connectionId , errorMessage);
@@ -21,7 +21,7 @@ public class Block extends Message{
         {
             //unfollow each other
         int tmpConnectionID=database.getUserName_ConnectionID().get(this.username);
-         database.getUser(tmpConnectionID).addBlock(database.getUser(connectionId));//got Connection id
+         database.getRegisterUsers().get(this.username).addBlock(user);//got Connection id
          database.unfollow(connectionId,this.username);
          database.unfollow(tmpConnectionID,database.getUser(connectionId).getUsername());
          ACK ackMessage = new ACK(OPCODE, null);
