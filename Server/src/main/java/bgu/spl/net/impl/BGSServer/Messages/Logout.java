@@ -2,14 +2,15 @@ package bgu.spl.net.impl.BGSServer.Messages;
 
 import bgu.spl.net.api.bidi.Connections;
 import bgu.spl.net.impl.BGSServer.DB;
-
+import bgu.spl.net.impl.BGSServer.User;
 
 
 public class Logout extends Message {
     private  final short OPCODE = 3;
     @Override
     public void process(int connectionId, Connections connections, DB database) {
-        if (database.getRegisterUsers().get(connectionId).isLoggedIn()){
+        User user =  database.getRegisterUsers().get(connectionId);
+        if (user != null && user.isLoggedIn()){
             database.getRegisterUsers().get(connectionId).logout();
             connections.disconnect(connectionId);
             //send ACK

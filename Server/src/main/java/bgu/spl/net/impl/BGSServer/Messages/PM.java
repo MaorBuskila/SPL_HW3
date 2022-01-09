@@ -18,12 +18,13 @@ public class PM extends Message {
     @Override
     public void process(int connectionId, Connections connections, DB database) {
         User user =database.getRegisterUsers().get(connectionId);
-        User tmpUser=database.getRegisterUsers().get(database.getUserName_ConnectionID().get(this.username));
+        int tmpUserId = database.getUserName_ConnectionID().get(this.username);
+        User tmpUser=database.getRegisterUsers().get(tmpUserId);
         if(user==null ||
-                !user.isLoggedIn() || //check if user is not logged in
-                tmpUser==null|| //check if registers list not conteain the connection ID
-                !user.getFollowing().contains(tmpUser) //check if the user is not follow the reciepient user
-                || user.isBlocked(tmpUser))
+            !user.isLoggedIn() || //check if user is not logged in
+            tmpUser==null|| //check if registers list not conteain the connection ID
+            !user.getFollowing().contains(tmpUser) //check if the user is not follow the reciepient user
+            || user.isBlocked(tmpUser))
         {
 
             Error errorMessage = new Error(OPCODE);

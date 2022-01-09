@@ -19,6 +19,7 @@ ConnectionHandler::~ConnectionHandler() {
 }
 
 bool ConnectionHandler::connect() {
+    std::atomic<bool> logout_flag{false};
     std::cout << "Starting connect to "
               << host_ << ":" << port_ << std::endl;
     try {
@@ -111,8 +112,6 @@ bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
             }
             if(opcode==11)
                 frame+="ERROR "+std::to_string(msgOpCode);
-//            if(delimiter != ch)
-//                frame+=" ";
         }
         if(opcode==9){
             frame+="NOTIFICATION ";
@@ -133,7 +132,6 @@ bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
 
 
 void ConnectionHandler :: notificationDecode(std::string& msg){
-    char* byte= new char[2];
     char ch;
     getBytes(&ch, 1);
     if(ch=='1')
@@ -164,7 +162,6 @@ void ConnectionHandler :: notificationDecode(std::string& msg){
 void ConnectionHandler::logStatOrStatDecode(std::string& msg,short subject) { //TODO check if need to delete Subject
     char* byte= new char[2];
     char ch;
-    //bool enter= true;
         getBytes(&ch, 1);
         byte[0]=ch;
         getBytes(&ch, 1);
@@ -187,15 +184,6 @@ void ConnectionHandler::logStatOrStatDecode(std::string& msg,short subject) { //
         short numfollowing=bytesToShort(byte);
         msg+=std::to_string(age)+" "+std::to_string(numPost)+" "+std::to_string(numfollowers)+" "+std::to_string(numfollowing);
     }
-
-
-
-//short ConnectionHandler::opcodeFinder(vector<char> &bytesVec) {
-//    short temp = 10 * (bytesVec[0] - '0') + bytesVec[1] - '0';
-//    cout<< "OPCODE IS : " << temp <<endl;
-//    return temp;
-//}
-//todo: delete all above
 
 
 vector<string> ConnectionHandler::split(string &frame,char delimiter) {

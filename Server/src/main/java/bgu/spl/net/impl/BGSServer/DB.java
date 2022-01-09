@@ -8,7 +8,7 @@ public class DB {
     private ConcurrentHashMap<Integer, User> registerUsers = new ConcurrentHashMap();
     private ConcurrentHashMap<String, Integer> userName_ConnectionID = new ConcurrentHashMap();
     private Vector<String> pmAndPostMessages=new Vector<>();
-    private String[] forbiddenWords=new String[]{"Adir","Trump","Maor" } ;
+    private String[] forbiddenWords=new String[]{"Nir","Trump","Maor" } ;
 
     private static DB database = null;
 
