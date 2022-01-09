@@ -21,7 +21,7 @@ public class Stat extends Message{
     {
         for (String tmpUserName : listOfUserNames) {
             int tmpUserNameID = database.getUserName_ConnectionID().get(tmpUserName);
-            User tmpUser = database.getUser(tmpUserNameID);
+            User tmpUser = database.getRegisterUsers().get(tmpUserName);
             if (user.isBlocked(tmpUser))
                 return true;
         }
@@ -40,7 +40,7 @@ public class Stat extends Message{
     @Override
     public void process(int connectionId, Connections connections, DB database) {
         User user = database.getLoggedInUser().get(connectionId);
-        if (user == null || !user.isLoggedIn()|| anyOneInTheListBlockMe(user,listOfUserNames,database) ||!anyOneIsRegistered(listOfUserNames,database)) {
+        if (user == null || !user.isLoggedIn()|| !anyOneIsRegistered(listOfUserNames,database) || anyOneInTheListBlockMe(user,listOfUserNames,database) ) {
             Error errorMessage = new Error(OPCODE);
             connections.send(connectionId, errorMessage);
         } else {

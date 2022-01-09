@@ -54,8 +54,7 @@ int main(int argc, char *argv[]) {
                 std::cout << "Read thread shutdown.\n" << std::endl;
                 break;
             }
-            int len = answer.length();
-            std::cout << "Reply: " << answer << " " << len << " bytes " << std::endl << std::endl;
+            std::cout  << answer <<  std::endl;
             if (answer == "ACK 3") {
                 logout_flag = true;
                 break;

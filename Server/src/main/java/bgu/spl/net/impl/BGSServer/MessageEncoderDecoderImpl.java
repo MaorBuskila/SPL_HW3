@@ -16,7 +16,7 @@ public class MessageEncoderDecoderImpl implements MessageEncoderDecoder<Message>
 
     @Override
     public Message decodeNextByte(byte nextByte) {
-        System.out.print(nextByte);
+        //  System.out.print(nextByte);
         if (len == 2) {
             opcode = bytesToShort(opBytes);
         }

@@ -43,8 +43,6 @@ public class ACK extends Message{
                 byteArray[k++]=optional[i];
                 }
             byteArray[k]=delimeter;
-            for(int i=0;i<byteArray.length;i++)
-                System.out.print(byteArray[i]+ " ");
             return byteArray;
             }
 
@@ -55,8 +53,6 @@ public class ACK extends Message{
             byteArray[2] = shortToBytes(messageOPcode)[0];
             byteArray[3] = shortToBytes(messageOPcode)[1];
             byteArray[4]=(byte)';';
-            for(int i=0;i<byteArray.length;i++)
-                System.out.print(byteArray[i]+ " ");
             return byteArray;
         }
     }

@@ -349,7 +349,7 @@ bool ConnectionHandler::sendFrameAscii(const std::string &frame, char delimiter)
         shortToBytes(OPCODE,opByteArray);
         charVec.push_back(*opByteArray);
         charVec.push_back(*(opByteArray+1));
-        for(int i=1;i<args.size();i++)
+        for(unsigned int i=1;i<args.size();i++)
         {
             for(char ch : args[i])
             {

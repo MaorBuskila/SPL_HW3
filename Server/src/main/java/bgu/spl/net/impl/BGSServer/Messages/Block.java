@@ -13,7 +13,7 @@ public class Block extends Message{
     @Override
     public void process(int connectionId, Connections connections, DB database) {
         User user =  database.getLoggedInUser().get(connectionId);
-        if(user==null || !database.getUserName_ConnectionID().containsKey(this.username)) {
+        if(user==null || !database.getUserName_ConnectionID().containsKey(this.username) || user.isBlocked(database.getRegisterUsers().get(this.username)) ){
             Error errorMessage=new Error(OPCODE);
             connections.send(connectionId , errorMessage);
         }
@@ -23,7 +23,7 @@ public class Block extends Message{
         int tmpConnectionID=database.getUserName_ConnectionID().get(this.username);
          database.getRegisterUsers().get(this.username).addBlock(user);//got Connection id
          database.unfollow(connectionId,this.username);
-         database.unfollow(tmpConnectionID,database.getUser(connectionId).getUsername());
+         database.unfollow(tmpConnectionID,user.getUsername());
          ACK ackMessage = new ACK(OPCODE, null);
          connections.send(connectionId , ackMessage);
         }
