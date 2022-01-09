@@ -47,8 +47,6 @@ public class Notification extends Message{
         }
         byteArray[k++]=0;
         byteArray[k]=';';
-        for(int i=0;i<byteArray.length;i++)
-            System.out.print(byteArray[i]+ " ");
        return byteArray;
     }
 
